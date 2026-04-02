@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Panel — VTU 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F6F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F0EDE5;
+  --border: #E3E0D6;
+  --border2: #C8C4B8;
+  --text: #18160F;
+  --muted: #6A6760;
+  --dim: #B0ACA2;
+  --accent: #5348E8;
+  --accent-light: #ECEAFD;
+  --accent-muted: #8880F0;
+
+  --tab-active-bg: #5348E8;
+  --tab-active-text: #fff;
+  --tab-bg: #fff;
+  --tab-text: #6A6760;
+
+  --badge-project-bg: #FFF0E0; --badge-project-text: #8A4800; --badge-project-border: #FFCF8A;
+  --badge-syllabus-bg: #E8F5EE; --badge-syllabus-text: #1A6040; --badge-syllabus-border: #A0D8B8;
+
+  --topic-bg: #F0EDE5; --topic-border: #D8D4C8; --topic-text: #18160F;
+
+  --easy-bg: #E8F5EE; --easy-text: #1A6040;
+  --medium-bg: #FFF0E0; --medium-text: #8A4800;
+  --hard-bg: #FDE8E8; --hard-text: #A02020;
+
+  --tip-bg: #ECEAFD; --tip-border: #5348E8; --tip-text: #2A2060;
+
+  --gen-bg: #F0EDE5; --gen-border: #D0CCBE;
+  --gen-tag-bg: #E8E4F8; --gen-tag-text: #3A3090;
+
+  --shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+[data-theme="dark"] {
+  --bg: #111013;
+  --surface: #1A1920;
+  --surface2: #222128;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.16);
+  --text: #F0EDE5;
+  --muted: #8A8780;
+  --dim: #3C3A38;
+  --accent: #7468F8;
+  --accent-light: #1C1845;
+  --accent-muted: #9A90FF;
+
+  --tab-active-bg: #7468F8;
+  --tab-active-text: #fff;
+  --tab-bg: #1A1920;
+  --tab-text: #8A8780;
+
+  --badge-project-bg: #2A1800; --badge-project-text: #F5B84A; --badge-project-border: #7A4A00;
+  --badge-syllabus-bg: #0A2818; --badge-syllabus-text: #60D898; --badge-syllabus-border: #1A6040;
+
+  --topic-bg: #222128; --topic-border: rgba(255,255,255,0.1); --topic-text: #F0EDE5;
+
+  --easy-bg: #0A2818; --easy-text: #60D898;
+  --medium-bg: #2A1800; --medium-text: #F5B84A;
+  --hard-bg: #280A0A; --hard-text: #F07070;
+
+  --tip-bg: #1C1845; --tip-border: #7468F8; --tip-text: #C0B8FF;
+
+  --gen-bg: #222128; --gen-border: rgba(255,255,255,0.1);
+  --gen-tag-bg: #1C1845; --gen-tag-text: #A09AF8;
+
+  --shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  transition: background 0.25s, color 0.25s;
+}
+
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+/* ── HEADER ── */
+header {
+  padding: 2.5rem 0 1.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
+h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.8rem, 4.5vw, 2.6rem); font-weight: 700; color: var(--text); letter-spacing: -0.01em; line-height: 1.1; }
+.subtitle { font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+
+.theme-toggle {
+  display: flex; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 100px; padding: 3px; gap: 2px; cursor: pointer;
+}
+.toggle-btn {
+  width: 32px; height: 26px; border-radius: 100px; border: none;
+  background: transparent; cursor: pointer; font-size: 13px;
+  color: var(--muted); transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.toggle-btn.active { background: var(--accent); }
+
+.stats-row { display: flex; gap: 1.25rem; }
+.stat { text-align: right; }
+.stat-num { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex; gap: 0; margin: 0 0 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 12px 16px; font-size: 12.5px; font-weight: 500; font-family: 'Inter', sans-serif;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── FILTERS ── */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 1.5rem; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.filter-group { display: flex; flex-direction: column; gap: 6px; }
+.filter-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 600; }
+.filter-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.pill {
+  padding: 5px 12px; border-radius: 100px; border: 1px solid var(--border);
+  font-size: 11.5px; font-weight: 500; cursor: pointer;
+  background: var(--surface); color: var(--muted); transition: all 0.15s;
+}
+.pill:hover { border-color: var(--accent); color: var(--accent); }
+.pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── SEARCH ── */
+.search-row { display: flex; gap: 10px; margin-bottom: 1rem; align-items: center; }
+.search-wrap { position: relative; flex: 1; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--dim); font-size: 14px; pointer-events: none; }
+#searchInput {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 12px 9px 36px;
+  font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text); outline: none;
+  transition: border-color 0.15s, background 0.25s;
+}
+#searchInput::placeholder { color: var(--dim); }
+#searchInput:focus { border-color: var(--accent); }
+
+.count-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.count-text { font-size: 12px; color: var(--muted); }
+.count-num { color: var(--accent); font-weight: 600; }
+.shuffle-btn {
+  font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted); padding: 5px 14px; border-radius: 100px; cursor: pointer; transition: all 0.15s;
+}
+.shuffle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── QUESTION CARDS ── */
+.qlist { display: flex; flex-direction: column; gap: 7px; }
+
+.qcard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; cursor: pointer;
+  transition: border-color 0.15s, background 0.25s;
+  animation: fadeUp 0.18s ease forwards;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.qcard:hover { border-color: var(--border2); }
+.qcard.open { border-color: var(--accent); }
+
+.qcard-top { display: flex; gap: 10px; align-items: flex-start; }
+.qnum { font-size: 10px; color: var(--dim); min-width: 20px; padding-top: 3px; font-weight: 600; }
+.qtext { flex: 1; font-size: 13.5px; line-height: 1.6; color: var(--text); font-weight: 500; }
+.qright { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+
+.badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 100px;
+  font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; border: 1px solid transparent;
+}
+.badge-proj { background: var(--badge-project-bg); color: var(--badge-project-text); border-color: var(--badge-project-border); }
+.badge-syl  { background: var(--badge-syllabus-bg); color: var(--badge-syllabus-text); border-color: var(--badge-syllabus-border); }
+
+.diff-dot {
+  width: 7px; height: 7px; border-radius: 50%; margin-top: 2px;
+}
+.d-easy   { background: var(--easy-text); }
+.d-medium { background: var(--medium-text); }
+.d-hard   { background: var(--hard-text); }
+
+.expand-row { display: flex; gap: 6px; align-items: center; margin-top: 8px; padding-left: 30px; }
+.expand-chevron { font-size: 10px; color: var(--dim); transition: transform 0.2s; }
+.qcard.open .expand-chevron { transform: rotate(180deg); color: var(--accent); }
+.expand-lbl { font-size: 11px; color: var(--dim); }
+
+.hint-box {
+  display: none; margin-top: 10px; padding: 10px 14px;
+  background: var(--surface2); border-radius: 8px; margin-left: 30px;
+}
+.qcard.open .hint-box { display: block; }
+
+.hint-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.hint-text { font-size: 12px; color: var(--muted); line-height: 1.75; }
+.panel-tip {
+  margin-top: 8px; padding: 8px 10px;
+  background: var(--tip-bg); border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0; font-size: 11.5px; color: var(--tip-text); line-height: 1.65;
+}
+.panel-tip strong { font-weight: 600; }
+
+/* ── ANSWER TABS inside card ── */
+.ans-tabs { display: flex; gap: 0; margin-top: 10px; margin-left: 30px; border-bottom: 1px solid var(--border); }
+.ans-tab-btn {
+  padding: 6px 14px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif;
+  background: transparent; border: none; cursor: pointer; color: var(--muted);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; letter-spacing: 0.03em;
+}
+.ans-tab-btn:hover { color: var(--text); }
+.ans-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.ans-panels { margin-left: 30px; }
+.ans-panel { display: none; padding: 10px 0 2px; }
+.ans-panel.active { display: block; }
+
+.ans-text {
+  font-size: 12.5px; color: var(--text); line-height: 1.85;
+  background: var(--surface2); border-radius: 8px; padding: 10px 14px;
+}
+.ans-text strong { font-weight: 600; color: var(--accent); }
+.ans-text ul { padding-left: 1.2rem; margin-top: 4px; }
+.ans-text li { margin-bottom: 3px; }
+
+.ans-code-block {
+  background: #1a1a2e; border-radius: 8px; padding: 12px 14px;
+  font-family: 'Courier New', monospace; font-size: 12px;
+  color: #e0e0e0; line-height: 1.7; overflow-x: auto;
+  white-space: pre;
+}
+[data-theme="light"] .ans-code-block { background: #1e1e2e; }
+
+.kw  { color: #7B90F8; }   /* keywords */
+.fn  { color: #79C0FF; }   /* functions */
+.cm  { color: #636e7b; font-style: italic; }  /* comments */
+.st  { color: #a5d6ff; }   /* strings */
+.nm  { color: #F8C555; }   /* numbers */
+.op  { color: #F97583; }   /* operators */
+
+.no-code { font-size: 12px; color: var(--muted); font-style: italic; padding: 8px 0; }
+
+/* ── EMPTY ── */
+.empty { text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
+
+/* ── SUBJECT TAGS ── */
+.subject-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+.subj-tag {
+  padding: 5px 13px; border-radius: 100px; border: 1px solid var(--border);
+  font-size: 11.5px; font-weight: 500; cursor: pointer;
+  background: var(--surface); color: var(--muted); transition: all 0.15s;
+}
+.subj-tag:hover { border-color: var(--accent); color: var(--accent); }
+.subj-tag.sel { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── PROJECT SECTION ── */
+.proj-hero {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
+}
+.proj-hero h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.proj-hero p { font-size: 12.5px; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+
+.tech-input-row { display: flex; gap: 8px; flex-wrap: wrap; }
+#techInput {
+  flex: 1; min-width: 160px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 12px; font-family: 'Inter', sans-serif;
+  font-size: 13px; color: var(--text); outline: none;
+  transition: border-color 0.15s;
+}
+#techInput::placeholder { color: var(--dim); }
+#techInput:focus { border-color: var(--accent); }
+.add-tech-btn {
+  padding: 9px 18px; background: var(--accent); color: #fff;
+  border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.add-tech-btn:hover { opacity: 0.88; }
+
+.tech-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; min-height: 28px; }
+.tech-chip {
+  padding: 4px 12px 4px 10px; border-radius: 100px;
+  background: var(--gen-tag-bg); color: var(--gen-tag-text);
+  font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px;
+}
+.tech-chip button { background: none; border: none; cursor: pointer; font-size: 12px; color: var(--gen-tag-text); opacity: 0.6; padding: 0; line-height: 1; }
+.tech-chip button:hover { opacity: 1; }
+
+.gen-btn {
+  width: 100%; margin-top: 1rem; padding: 11px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 10px; font-size: 14px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.15s;
+}
+.gen-btn:hover { opacity: 0.88; }
+.gen-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.generated-qs { display: flex; flex-direction: column; gap: 7px; margin-top: 1.25rem; }
+.gen-qcard {
+  background: var(--gen-bg); border: 1px solid var(--gen-border);
+  border-radius: 10px; padding: 13px 16px;
+  animation: fadeUp 0.18s ease forwards;
+}
+.gen-qcard-top { display: flex; gap: 10px; align-items: flex-start; }
+.gen-qtext { flex: 1; font-size: 13.5px; line-height: 1.6; color: var(--text); font-weight: 500; }
+.gen-tech-tag {
+  font-size: 10px; padding: 2px 8px; border-radius: 100px;
+  background: var(--gen-tag-bg); color: var(--gen-tag-text);
+  font-weight: 600; white-space: nowrap; flex-shrink: 0;
+}
+.gen-hint {
+  font-size: 12px; color: var(--muted); line-height: 1.7;
+  margin-top: 6px; padding-left: 22px;
+}
+
+.loading-msg { text-align: center; padding: 2rem; color: var(--muted); font-size: 13px; }
+.loading-spinner {
+  display: inline-block; width: 18px; height: 18px;
+  border: 2px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── QUICK BRIEF ── */
+.brief-hero {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
+}
+.brief-hero h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.brief-hero p { font-size: 12.5px; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+
+.brief-input-row { display: flex; gap: 8px; }
+#briefInput {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px;
+  font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text); outline: none;
+  transition: border-color 0.15s;
+}
+#briefInput::placeholder { color: var(--dim); }
+#briefInput:focus { border-color: var(--accent); }
+.brief-btn {
+  padding: 10px 20px; background: var(--accent); color: #fff; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.15s; white-space: nowrap;
+}
+.brief-btn:hover { opacity: 0.88; }
+.brief-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.brief-examples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.brief-ex {
+  padding: 5px 12px; border-radius: 100px; border: 1px solid var(--border);
+  font-size: 11.5px; font-weight: 500; cursor: pointer;
+  background: var(--surface2); color: var(--muted); transition: all 0.15s;
+}
+.brief-ex:hover { border-color: var(--accent); color: var(--accent); }
+
+.brief-result {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin-top: 1rem;
+  animation: fadeUp 0.2s ease forwards;
+}
+.brief-topic-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: var(--accent); color: #fff;
+}
+.brief-topic-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 700; }
+.brief-tag { font-size: 10px; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 100px; font-weight: 500; }
+
+.brief-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+.brief-section-title {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.brief-text { font-size: 13px; color: var(--text); line-height: 1.8; }
+.brief-text strong { font-weight: 600; }
+
+.brief-qs { display: flex; flex-direction: column; gap: 6px; }
+.brief-q {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 12px; background: var(--surface2);
+  border-radius: 8px; font-size: 13px; color: var(--text); line-height: 1.6;
+}
+.brief-q-num { font-size: 10px; color: var(--dim); min-width: 18px; padding-top: 2px; font-weight: 600; flex-shrink: 0; }
+
+.brief-warn {
+  padding: 10px 14px; background: var(--tip-bg);
+  border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+  font-size: 12.5px; color: var(--tip-text); line-height: 1.7;
+}
+.brief-warn strong { font-weight: 600; color: var(--text); }
+
+.brief-divider { border: none; border-top: 1px solid var(--border); }
+
+/* ── RESUME TAB ── */
+.resume-upload-zone {
+  border: 2px dashed var(--border2); border-radius: 14px;
+  padding: 2.5rem 1.5rem; text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--surface); margin-bottom: 1.5rem;
+  position: relative;
+}
+.resume-upload-zone:hover, .resume-upload-zone.drag { border-color: var(--accent); background: var(--accent-light); }
+.resume-upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.upload-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.upload-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.upload-types { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+.upload-type-tag { font-size: 10px; padding: 2px 10px; border-radius: 100px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-weight: 600; }
+
+.file-chosen { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; }
+.file-icon { font-size: 1.4rem; }
+.file-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+.file-size { font-size: 11px; color: var(--muted); }
+.file-remove { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 0; }
+.file-remove:hover { color: var(--hard-text); }
+
+.analyze-btn {
+  width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none;
+  border-radius: 10px; font-size: 14px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.15s; margin-bottom: 1.5rem;
+}
+.analyze-btn:hover { opacity: 0.88; }
+.analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* candidate profile card */
+.candidate-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin-bottom: 1.5rem;
+  animation: fadeUp 0.2s ease forwards;
+}
+.candidate-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-muted) 100%);
+  display: flex; align-items: center; gap: 14px;
+}
+.candidate-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); display: flex; align-items: center;
+  justify-content: center; font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.candidate-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: #fff; }
+.candidate-meta { font-size: 11.5px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+
+.candidate-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
+
+.profile-section-title { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 700; margin-bottom: 7px; }
+
+.skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-chip {
+  padding: 4px 12px; border-radius: 100px; font-size: 11.5px; font-weight: 500;
+  border: 1px solid transparent;
+}
+.skill-chip.strong { background: var(--badge-syllabus-bg); color: var(--badge-syllabus-text); border-color: var(--badge-syllabus-border); }
+.skill-chip.medium { background: var(--accent-light); color: var(--accent); border-color: rgba(83,72,232,0.2); }
+.skill-chip.mentioned { background: var(--surface2); color: var(--muted); border-color: var(--border); }
+
+.project-item { padding: 10px 12px; background: var(--surface2); border-radius: 8px; }
+.project-item-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.project-item-desc { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+.project-item-techs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.project-tech { font-size: 10px; padding: 1px 8px; border-radius: 100px; background: var(--gen-tag-bg); color: var(--gen-tag-text); font-weight: 600; }
+
+.concern-item { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--muted); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.concern-item:last-child { border-bottom: none; }
+.concern-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--medium-text); flex-shrink: 0; margin-top: 5px; }
+.concern-dot.red { background: var(--hard-text); }
+
+/* generated question list for candidate */
+.cand-qs { display: flex; flex-direction: column; gap: 7px; }
+.cand-qcard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 13px 16px; cursor: pointer;
+  transition: border-color 0.15s; animation: fadeUp 0.18s ease forwards;
+}
+.cand-qcard:hover { border-color: var(--border2); }
+.cand-qcard.open { border-color: var(--accent); }
+.cand-qtop { display: flex; gap: 10px; align-items: flex-start; }
+.cand-qtext { flex: 1; font-size: 13.5px; line-height: 1.6; color: var(--text); font-weight: 500; }
+.cand-qright { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; flex-shrink: 0; }
+.cand-why { font-size: 12px; color: var(--muted); margin-top: 6px; padding-left: 22px; line-height: 1.65; display: none; }
+.cand-qcard.open .cand-why { display: block; }
+.cand-why-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); font-weight: 700; margin-bottom: 3px; }
+
+.section-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.75rem; display: flex; align-items: center; gap: 8px; }
+.section-heading-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── FOOTER TIP ── */
+.footer-tip {
+  margin-top: 2.5rem; padding: 1.25rem 1.5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; border-left: 4px solid var(--accent);
+}
+.footer-tip-title { font-family: 'Playfair Display', Georgia, serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.footer-tip-body { font-size: 12px; color: var(--muted); line-height: 1.85; }
+.footer-tip-body strong { color: var(--text); font-weight: 600; }
+
+footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; color: var(--dim); text-align: center; margin-top: 2rem; letter-spacing: 0.04em; }
+
+@media (max-width: 580px) {
+  .header-top { flex-direction: column; gap: 1rem; }
+  .header-right { align-items: flex-start; flex-direction: row; justify-content: space-between; width: 100%; }
+  .stats-row { gap: 1rem; }
+  .stat { text-align: left; }
+  .stat-num { font-size: 1.2rem; }
+  .qright { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .hint-box, .expand-row { margin-left: 0; padding-left: 0; }
+  .ans-tabs { margin-left: 0; }
+  .ans-panels { margin-left: 0; }
+  .filter-bar { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0.9rem 1rem; }
+  .filter-group { width: 100%; }
+  .filter-pills { flex-wrap: wrap; }
+  h1 { font-size: 1.8rem; }
+  .wrap { padding: 0 1rem 4rem; }
+  .brief-hero, .proj-hero { padding: 1rem; }
+  .candidate-header { padding: 1rem; }
+  .candidate-body { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-top">
+    <div>
+      <div class="eyebrow">// interview panel · VTU 2026 freshers</div>
+      <h1>Question Bank</h1>
+      <p class="subtitle">Syllabus-based + project-based questions for college technical rounds.</p>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <button class="toggle-btn active" id="btn-light">☀️</button>
+        <button class="toggle-btn" id="btn-dark">🌙</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num" id="hdrCount">60+</div><div class="stat-label">Questions</div></div>
+        <div class="stat"><div class="stat-num">8</div><div class="stat-label">Subjects</div></div>
+        <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Project Gen</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('syllabus', this)">📚 Syllabus Questions</button>
+  <button class="tab-btn" onclick="switchTab('project', this)">🛠️ Project Questions</button>
+  <button class="tab-btn" onclick="switchTab('gen', this)">✨ Generate from Tech Stack</button>
+  <button class="tab-btn" onclick="switchTab('brief', this)">🔍 Quick Topic Brief</button>
+  <button class="tab-btn" onclick="switchTab('resume', this)">📄 Resume Analyser</button>
+</div>
+
+<!-- ══════════════ TAB 1: SYLLABUS ══════════════ -->
+<div class="section active" id="sec-syllabus">
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <div class="filter-label">Subject</div>
+      <div class="filter-pills" id="subjFilters"></div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Difficulty</div>
+      <div class="filter-pills" id="diffFilters"></div>
+    </div>
+  </div>
+
+  <div class="search-row">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="search questions…" autocomplete="off" />
+    </div>
+  </div>
+
+  <div class="count-row">
+    <span class="count-text">showing <span class="count-num" id="showing">—</span> questions</span>
+    <button class="shuffle-btn" onclick="shuffle()">↻ shuffle</button>
+  </div>
+
+  <div class="qlist" id="qlist"></div>
+
+  <div class="footer-tip" style="margin-top:2rem">
+    <div class="footer-tip-title">Tip: Focus on understanding, not memorization</div>
+    <div class="footer-tip-body">
+      For freshers, always ask <strong>"why"</strong> after they answer — e.g., "Why do we use a primary key?" reveals if they understood or just memorized.<br>
+      Ask them to relate any concept to their <strong>final year project</strong> — this is where you separate strong candidates from average ones.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TAB 2: PROJECT ══════════════ -->
+<div class="section" id="sec-project">
+  <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+    <p style="font-size:13px; color:var(--muted); line-height:1.7;">
+      These questions are designed to be asked <strong style="color:var(--text)">after the candidate describes their project</strong>. They test depth of understanding — not whether they can recite theory, but whether they truly built something and can defend their choices.
+    </p>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <div class="filter-label">Project Type</div>
+      <div class="filter-pills" id="projTypeFilters"></div>
+    </div>
+  </div>
+
+  <div class="count-row">
+    <span class="count-text">showing <span class="count-num" id="projShowing">—</span> questions</span>
+  </div>
+  <div class="qlist" id="projList"></div>
+</div>
+
+<!-- ══════════════ TAB 3: GENERATE ══════════════ -->
+<div class="section" id="sec-gen">
+  <div class="proj-hero">
+    <h3>Generate questions from their tech stack</h3>
+    <p>Before the interview, ask the candidate to share their project tech stack. Enter the technologies below and get tailored questions you can ask them.</p>
+
+    <div class="tech-input-row">
+      <input type="text" id="techInput" placeholder="e.g. React, MySQL, Flask…" autocomplete="off"
+        onkeydown="if(event.key==='Enter') addTech()" />
+      <button class="add-tech-btn" onclick="addTech()">+ Add</button>
+    </div>
+    <div class="tech-chips" id="techChips"></div>
+
+    <div style="margin-top:10px; padding:8px 12px; background:var(--surface2); border-radius:8px;">
+      <p style="font-size:11px; color:var(--muted)">💡 <strong style="color:var(--text)">Popular stacks:</strong></p>
+      <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px">
+        <span class="pill" style="font-size:11px;" onclick="addStack(['React','Node.js','MongoDB'])">MERN</span>
+        <span class="pill" style="font-size:11px;" onclick="addStack(['Python','Flask','MySQL'])">Python + Flask</span>
+        <span class="pill" style="font-size:11px;" onclick="addStack(['Python','Machine Learning','Scikit-learn'])">ML Project</span>
+        <span class="pill" style="font-size:11px;" onclick="addStack(['Android','Java','Firebase'])">Android App</span>
+        <span class="pill" style="font-size:11px;" onclick="addStack(['React','Python','OpenAI API'])">AI Web App</span>
+        <span class="pill" style="font-size:11px;" onclick="addStack(['HTML','CSS','JavaScript','PHP','MySQL'])">PHP + MySQL</span>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="genBtn" onclick="generateQuestions()" disabled>✨ Generate Questions</button>
+  </div>
+
+  <div id="genOutput"></div>
+</div>
+
+<!-- ══════════════ TAB 4: QUICK BRIEF ══════════════ -->
+<div class="section" id="sec-brief">
+  <div class="brief-hero">
+    <h3>🔍 Quick Topic Brief</h3>
+    <p>Spotted a technology or topic on their resume that you don't recognize? Type it below and get a 60-second panelist briefing — what it is, how to sound informed, and 3 questions you can actually ask.</p>
+
+    <div class="brief-input-row">
+      <input type="text" id="briefInput" placeholder="e.g. Kubernetes, GraphQL, LangChain…" autocomplete="off"
+        onkeydown="if(event.key==='Enter') getBrief()" />
+      <button class="brief-btn" id="briefBtn" onclick="getBrief()">Brief me →</button>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div style="font-size:11px; color:var(--muted); margin-bottom:7px;">Try these resume buzzwords:</div>
+      <div class="brief-examples">
+        <span class="brief-ex" onclick="quickBrief('Kubernetes')">Kubernetes</span>
+        <span class="brief-ex" onclick="quickBrief('GraphQL')">GraphQL</span>
+        <span class="brief-ex" onclick="quickBrief('LangChain')">LangChain</span>
+        <span class="brief-ex" onclick="quickBrief('Docker')">Docker</span>
+        <span class="brief-ex" onclick="quickBrief('Redis')">Redis</span>
+        <span class="brief-ex" onclick="quickBrief('WebSockets')">WebSockets</span>
+        <span class="brief-ex" onclick="quickBrief('Microservices')">Microservices</span>
+        <span class="brief-ex" onclick="quickBrief('TensorFlow')">TensorFlow</span>
+        <span class="brief-ex" onclick="quickBrief('FastAPI')">FastAPI</span>
+        <span class="brief-ex" onclick="quickBrief('Kafka')">Kafka</span>
+        <span class="brief-ex" onclick="quickBrief('Blockchain')">Blockchain</span>
+        <span class="brief-ex" onclick="quickBrief('Flutter')">Flutter</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="briefOutput"></div>
+</div>
+
+<!-- ══════════════ TAB 5: RESUME ══════════════ -->
+<div class="section" id="sec-resume" style="display:none">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;">
+      Upload a candidate's resume (PDF or text) and Claude will <strong style="color:var(--text)">automatically detect their skills, tech stack, and projects</strong> — then generate a personalised question list tailored specifically to that candidate.
+    </p>
+  </div>
+
+  <div class="resume-upload-zone" id="uploadZone" ondragover="onDrag(event,true)" ondragleave="onDrag(event,false)" ondrop="onDrop(event)">
+    <input type="file" id="resumeFile" accept=".pdf,.txt,.doc,.docx" onchange="onFileSelect(event)" />
+    <div class="upload-icon">📄</div>
+    <div class="upload-title">Drop resume here or click to browse</div>
+    <div class="upload-sub">Supports PDF, Word (.docx), or plain text files</div>
+    <div class="upload-types">
+      <span class="upload-type-tag">PDF</span>
+      <span class="upload-type-tag">DOCX</span>
+      <span class="upload-type-tag">TXT</span>
+    </div>
+  </div>
+
+  <div id="fileChosen" style="display:none"></div>
+  <button class="analyze-btn" id="analyzeBtn" onclick="analyzeResume()" disabled>🔍 Analyse Resume & Generate Questions</button>
+  <div id="resumeOutput"></div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ══════════════════════════════════════════════
+// API — calls go through /api (Netlify Function proxy)
+// ══════════════════════════════════════════════
+const API_URL = "/api";
+
+// ══════════════════════════════════════════════
+// DATA — SYLLABUS QUESTIONS
+// ══════════════════════════════════════════════
+const syllabusQs = [
+  // DBMS
+  { t:"What is a primary key? Why do we need it?", subj:"DBMS", diff:"easy",
+    hint:"Look for: uniqueness, no nulls, identifies each record. Ask them to give an example from daily life.",
+    tip:"Simplest DBMS question — if they fumble here, probe their actual DB usage in project.",
+    ans:"A <strong>primary key</strong> is a column (or set of columns) that uniquely identifies each row in a table. Rules: (1) must be unique for every row, (2) cannot be NULL, (3) each table has only one primary key.<br><br>Example: In a Students table, <em>student_id</em> is the primary key. Two students cannot have the same ID, and every student must have one.<br><br><strong>Why we need it:</strong> Without it, we can't distinguish between two rows that have the same name or other data. It's the address of a row.",
+    code:`<span class="cm">-- Creating a table with primary key</span>
+<span class="kw">CREATE TABLE</span> Students (
+  student_id  <span class="kw">INT</span> <span class="kw">PRIMARY KEY</span>,
+  name        <span class="kw">VARCHAR</span>(<span class="nm">100</span>),
+  email       <span class="kw">VARCHAR</span>(<span class="nm">100</span>)
+);
+
+<span class="cm">-- Auto-increment primary key (most common)</span>
+<span class="kw">CREATE TABLE</span> Students (
+  student_id  <span class="kw">INT</span> <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+  name        <span class="kw">VARCHAR</span>(<span class="nm">100</span>)
+);` },
+
+  { t:"What is the difference between DELETE, TRUNCATE, and DROP?", subj:"DBMS", diff:"easy",
+    hint:"DELETE: row-by-row, can rollback. TRUNCATE: all rows, faster, can't rollback. DROP: removes entire table.",
+    tip:"Very commonly asked. Tests if they've actually run SQL queries.",
+    ans:"<strong>DELETE:</strong> Removes specific rows based on a WHERE condition. Logged row-by-row, can be rolled back. Table structure remains.<br><br><strong>TRUNCATE:</strong> Removes ALL rows at once. Faster than DELETE (no row-level logging). Cannot be rolled back in most DBs. Table structure remains.<br><br><strong>DROP:</strong> Removes the entire table — structure, data, indexes, everything. Permanent. Cannot be rolled back.",
+    code:`<span class="cm">-- DELETE: removes specific rows, can rollback</span>
+<span class="kw">DELETE FROM</span> Students <span class="kw">WHERE</span> student_id = <span class="nm">5</span>;
+
+<span class="cm">-- TRUNCATE: removes ALL rows, faster</span>
+<span class="kw">TRUNCATE TABLE</span> Students;
+
+<span class="cm">-- DROP: removes entire table permanently</span>
+<span class="kw">DROP TABLE</span> Students;` },
+
+  { t:"What is a foreign key? Give an example.", subj:"DBMS", diff:"easy",
+    hint:"Links one table to primary key of another. Example: Orders table with customer_id referencing Customers.",
+    tip:"Ask them to show how it applies in their project DB.",
+    ans:"A <strong>foreign key</strong> is a column in one table that references the primary key of another table. It creates a link between two tables and enforces <em>referential integrity</em> — you can't insert a value that doesn't exist in the referenced table.<br><br>Example: An Orders table has a <em>customer_id</em> column. This references the <em>customer_id</em> primary key in the Customers table. You can't place an order for a customer who doesn't exist.",
+    code:`<span class="kw">CREATE TABLE</span> Customers (
+  customer_id  <span class="kw">INT PRIMARY KEY</span>,
+  name         <span class="kw">VARCHAR</span>(<span class="nm">100</span>)
+);
+
+<span class="kw">CREATE TABLE</span> Orders (
+  order_id     <span class="kw">INT PRIMARY KEY</span>,
+  customer_id  <span class="kw">INT</span>,
+  amount       <span class="kw">DECIMAL</span>(<span class="nm">10</span>,<span class="nm">2</span>),
+  <span class="kw">FOREIGN KEY</span> (customer_id) <span class="kw">REFERENCES</span> Customers(customer_id)
+);` },
+
+  { t:"What is normalization? Why do we do it?", subj:"DBMS", diff:"medium",
+    hint:"Reducing redundancy, organizing data. 1NF → 2NF → 3NF. Not looking for perfect definitions, just awareness.",
+    tip:"Don't ask for all normal forms — just ask what problem it solves.",
+    ans:"<strong>Normalization</strong> is the process of organizing a database to reduce data redundancy and improve data integrity.<br><br><strong>1NF:</strong> Each column has atomic (single) values. No repeating groups.<br><strong>2NF:</strong> 1NF + every non-key column depends on the entire primary key (no partial dependency).<br><strong>3NF:</strong> 2NF + no transitive dependency (non-key columns don't depend on other non-key columns).<br><br><strong>Why:</strong> Avoids anomalies — if a student's city is stored in every row, updating it means updating 1000 rows. Normalization puts city in a separate table.",
+    code:`<span class="cm">-- UN-normalized (bad): city repeated for every student</span>
+<span class="cm">-- Students(id, name, dept_id, dept_name, dept_hod)</span>
+
+<span class="cm">-- Normalized: split into two tables</span>
+<span class="kw">CREATE TABLE</span> Departments (
+  dept_id   <span class="kw">INT PRIMARY KEY</span>,
+  dept_name <span class="kw">VARCHAR</span>(<span class="nm">100</span>),
+  hod       <span class="kw">VARCHAR</span>(<span class="nm">100</span>)
+);
+<span class="kw">CREATE TABLE</span> Students (
+  id      <span class="kw">INT PRIMARY KEY</span>,
+  name    <span class="kw">VARCHAR</span>(<span class="nm">100</span>),
+  dept_id <span class="kw">INT REFERENCES</span> Departments(dept_id)
+);` },
+
+  { t:"What is a JOIN? Explain with an example.", subj:"DBMS", diff:"easy",
+    hint:"Combining rows from two tables based on related column. INNER, LEFT, RIGHT. Simple example expected.",
+    tip:"Ask them to write a simple JOIN for their project schema.",
+    ans:"A <strong>JOIN</strong> combines rows from two or more tables based on a related column.<br><br><strong>INNER JOIN:</strong> Returns only matching rows from both tables.<br><strong>LEFT JOIN:</strong> Returns all rows from left table + matching from right. Non-matching right rows are NULL.<br><strong>RIGHT JOIN:</strong> Opposite of LEFT JOIN.<br><br>Good answer: candidate explains with a real example and can write the SQL syntax.",
+    code:`<span class="cm">-- INNER JOIN: only students who have an order</span>
+<span class="kw">SELECT</span> s.name, o.amount
+<span class="kw">FROM</span> Students s
+<span class="kw">INNER JOIN</span> Orders o <span class="kw">ON</span> s.student_id = o.student_id;
+
+<span class="cm">-- LEFT JOIN: all students, even those without orders</span>
+<span class="kw">SELECT</span> s.name, o.amount
+<span class="kw">FROM</span> Students s
+<span class="kw">LEFT JOIN</span> Orders o <span class="kw">ON</span> s.student_id = o.student_id;` },
+
+  { t:"What is a transaction? What are ACID properties?", subj:"DBMS", diff:"medium",
+    hint:"Atomicity, Consistency, Isolation, Durability. Even basic awareness is fine for freshers.",
+    tip:"Don't expect deep explanation. 'All operations succeed or none do' for Atomicity is good enough.",
+    ans:"A <strong>transaction</strong> is a sequence of SQL operations treated as a single unit of work.<br><br><strong>A</strong>tomicity — All operations succeed, or none do. (Bank transfer: debit + credit both happen or neither does.)<br><strong>C</strong>onsistency — DB moves from one valid state to another. Rules are never violated.<br><strong>I</strong>solation — Concurrent transactions don't interfere with each other.<br><strong>D</strong>urability — Once committed, changes persist even after a crash.",
+    code:`<span class="kw">START TRANSACTION</span>;
+
+<span class="cm">-- Debit from sender</span>
+<span class="kw">UPDATE</span> Accounts <span class="kw">SET</span> balance = balance - <span class="nm">500</span>
+<span class="kw">WHERE</span> account_id = <span class="nm">1</span>;
+
+<span class="cm">-- Credit to receiver</span>
+<span class="kw">UPDATE</span> Accounts <span class="kw">SET</span> balance = balance + <span class="nm">500</span>
+<span class="kw">WHERE</span> account_id = <span class="nm">2</span>;
+
+<span class="kw">COMMIT</span>;   <span class="cm">-- both succeed</span>
+<span class="cm">-- ROLLBACK;  -- undo if anything fails</span>` },
+
+  { t:"What is an index in a database? Why is it useful?", subj:"DBMS", diff:"medium",
+    hint:"Speeds up SELECT queries, like a book index. Tradeoff: slows down INSERT/UPDATE.",
+    tip:"If they used any DB, ask if they created indexes and why.",
+    ans:"An <strong>index</strong> is a data structure (usually a B-Tree) that speeds up data retrieval on a column, similar to a book's index.<br><br><strong>Without index:</strong> DB scans every row (full table scan) — O(n).<br><strong>With index:</strong> DB jumps directly to matching rows — O(log n).<br><br><strong>Tradeoff:</strong> Indexes speed up SELECT but slow down INSERT, UPDATE, DELETE because the index must also be updated. Don't index every column — only frequently searched ones.",
+    code:`<span class="cm">-- Create index on a frequently searched column</span>
+<span class="kw">CREATE INDEX</span> idx_student_name
+<span class="kw">ON</span> Students (name);
+
+<span class="cm">-- This query is now fast:</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> Students <span class="kw">WHERE</span> name = <span class="st">'Rohan'</span>;
+
+<span class="cm">-- Unique index (also enforces uniqueness)</span>
+<span class="kw">CREATE UNIQUE INDEX</span> idx_email
+<span class="kw">ON</span> Students (email);` },
+
+  // OS
+  { t:"What is an operating system? What does it do?", subj:"OS", diff:"easy",
+    hint:"Manages hardware resources, provides interface between user and hardware. Mention process/memory/file management.",
+    tip:"Warm-up question. See if they can explain it simply, not just recite a definition.",
+    ans:"An <strong>Operating System</strong> is system software that acts as an intermediary between user applications and hardware.<br><br><strong>Key functions:</strong><ul><li><strong>Process management</strong> — creates, schedules, terminates processes</li><li><strong>Memory management</strong> — allocates/deallocates RAM</li><li><strong>File system management</strong> — read/write/organize files</li><li><strong>Device management</strong> — communicates with hardware via drivers</li><li><strong>Security</strong> — user authentication, access control</li></ul>Examples: Windows, Linux, macOS, Android.",
+    code:null },
+
+  { t:"What is the difference between a process and a thread?", subj:"OS", diff:"easy",
+    hint:"Process: independent program with own memory. Thread: lightweight unit within process, shares memory.",
+    tip:"Very common. Ask how many threads their project used, if any.",
+    ans:"<strong>Process:</strong> An independent program in execution. Has its own memory space (code, data, heap, stack). Isolated — one process crashing doesn't affect another.<br><br><strong>Thread:</strong> A lightweight unit of execution within a process. Shares the process's memory space. Multiple threads in one process can run concurrently — faster communication but risk of race conditions.<br><br><strong>Analogy:</strong> A restaurant is a process. Each waiter is a thread — they share the same kitchen (memory) but work independently.",
+    code:`<span class="cm">// Java example — creating a thread</span>
+<span class="kw">class</span> <span class="fn">MyTask</span> <span class="kw">implements</span> Runnable {
+  <span class="kw">public void</span> <span class="fn">run</span>() {
+    System.out.<span class="fn">println</span>(<span class="st">"Thread running"</span>);
+  }
+}
+
+<span class="cm">// Start thread</span>
+Thread t = <span class="kw">new</span> <span class="fn">Thread</span>(<span class="kw">new</span> <span class="fn">MyTask</span>());
+t.<span class="fn">start</span>();  <span class="cm">// runs concurrently with main</span>` },
+
+  { t:"What is deadlock? How can it be prevented?", subj:"OS", diff:"medium",
+    hint:"Two processes waiting for each other's resources. Prevention: avoid circular wait, use timeouts, banker's algorithm.",
+    tip:"Don't expect deep prevention algorithms. Just see if they can explain the circular wait scenario.",
+    ans:"<strong>Deadlock</strong> occurs when two or more processes are waiting for each other to release resources, and none can proceed.<br><br><strong>4 necessary conditions (Coffman):</strong> Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait.<br><br><strong>Prevention strategies:</strong><ul><li>Break circular wait — assign an order to resource acquisition</li><li>Use timeouts — if waiting too long, give up and retry</li><li>Banker's Algorithm — check if resource allocation leads to safe state before granting</li></ul><strong>Analogy:</strong> Two cars at a single-lane bridge, each waiting for the other to reverse.",
+    code:null },
+
+  { t:"What is virtual memory?", subj:"OS", diff:"medium",
+    hint:"Extends RAM using disk (swap space). Allows programs larger than physical RAM to run. Pages swapped in/out.",
+    tip:"Ask: 'Have you ever seen a program become slow due to memory? Why does that happen?'",
+    ans:"<strong>Virtual memory</strong> is a memory management technique that gives each process the illusion it has more memory than physically available, by using disk space as an extension of RAM.<br><br><strong>How it works:</strong> Memory is divided into fixed-size <em>pages</em>. Pages not currently in use are stored on disk (swap space). When needed, they are swapped back into RAM — this is a <em>page fault</em>.<br><br><strong>Benefit:</strong> Programs larger than RAM can run. Processes are isolated (each has its own virtual address space).<br><strong>Cost:</strong> Disk is much slower than RAM — too many page faults = <em>thrashing</em> (system becomes very slow).",
+    code:null },
+
+  { t:"What are the different CPU scheduling algorithms you know?", subj:"OS", diff:"easy",
+    hint:"FCFS, SJF, Round Robin, Priority. Even naming 2-3 with a basic idea is fine for freshers.",
+    tip:"Ask which one they think is fairest and why — tests reasoning over memorization.",
+    ans:"<strong>FCFS (First Come First Serve):</strong> Processes are executed in arrival order. Simple but can cause convoy effect (short jobs wait behind long ones).<br><br><strong>SJF (Shortest Job First):</strong> Process with smallest burst time runs next. Optimal average waiting time but requires knowing burst time in advance.<br><br><strong>Round Robin:</strong> Each process gets a fixed time slice (quantum). Fair for all processes. Used in most real OSes.<br><br><strong>Priority Scheduling:</strong> Higher priority processes run first. Risk of starvation for low-priority processes.",
+    code:null },
+
+  { t:"What is the difference between paging and segmentation?", subj:"OS", diff:"medium",
+    hint:"Paging: fixed-size blocks, no external fragmentation. Segmentation: variable-size logical units (code, stack, data).",
+    tip:"Conceptual question — if they get confused, pivot to 'what is paging in simple terms?'",
+    ans:"<strong>Paging:</strong> Physical memory is divided into fixed-size blocks called <em>frames</em>. Logical memory is divided into same-size <em>pages</em>. Pages are mapped to frames. No external fragmentation. The programmer is unaware of it.<br><br><strong>Segmentation:</strong> Memory is divided into variable-size segments based on logical units — code segment, data segment, stack segment. The programmer is aware of segments. Has external fragmentation.<br><br><strong>Modern OS:</strong> Uses both — segmented pages.",
+    code:null },
+
+  // CN
+  { t:"What is the OSI model? Name its layers.", subj:"CN", diff:"easy",
+    hint:"7 layers: Physical, Data Link, Network, Transport, Session, Presentation, Application. Basic function of each.",
+    tip:"Don't ask all 7 in depth. Pick 2-3 and ask what they do.",
+    ans:"The <strong>OSI (Open Systems Interconnection)</strong> model is a conceptual framework with 7 layers for network communication:<br><br><strong>7. Application</strong> — User-facing protocols (HTTP, FTP, SMTP)<br><strong>6. Presentation</strong> — Encryption, compression, data format<br><strong>5. Session</strong> — Manages sessions/connections<br><strong>4. Transport</strong> — End-to-end delivery, TCP/UDP, port numbers<br><strong>3. Network</strong> — Routing, IP addresses<br><strong>2. Data Link</strong> — MAC addresses, frames, switches<br><strong>1. Physical</strong> — Cables, signals, bits<br><br>Mnemonic: <em>All People Seem To Need Data Processing</em>",
+    code:null },
+
+  { t:"What is the difference between TCP and UDP?", subj:"CN", diff:"easy",
+    hint:"TCP: reliable, connection-oriented, slower. UDP: fast, no guarantee, used for streaming/gaming.",
+    tip:"Ask: 'Which would you use for a video call and why?' — tests applied thinking.",
+    ans:"<strong>TCP (Transmission Control Protocol):</strong><ul><li>Connection-oriented (3-way handshake)</li><li>Reliable — guarantees delivery and order</li><li>Error checking and retransmission</li><li>Slower due to overhead</li><li>Use: HTTP, email, file transfer</li></ul><strong>UDP (User Datagram Protocol):</strong><ul><li>Connectionless — just sends, no handshake</li><li>No guarantee of delivery or order</li><li>Fast, low latency</li><li>Use: video streaming, online gaming, DNS, VoIP</li></ul><strong>Key insight:</strong> In a video call, dropping a frame is better than pausing to retransmit it — hence UDP.",
+    code:null },
+
+  { t:"What happens when you type www.google.com in a browser?", subj:"CN", diff:"medium",
+    hint:"DNS lookup → TCP connection → HTTP request → Server response → Browser renders. Step-by-step flow.",
+    tip:"Great question — depth of answer reveals overall CS fundamentals. Let them go as far as they can.",
+    ans:"<strong>Step-by-step:</strong><br><br>1. <strong>DNS Resolution</strong> — Browser checks cache, then asks DNS server to convert www.google.com → IP address (e.g. 142.250.195.4)<br>2. <strong>TCP Handshake</strong> — Browser opens a TCP connection to that IP on port 80/443 (SYN → SYN-ACK → ACK)<br>3. <strong>TLS Handshake</strong> (if HTTPS) — Negotiate encryption<br>4. <strong>HTTP Request</strong> — Browser sends GET / HTTP/1.1<br>5. <strong>Server Response</strong> — Google's server sends back HTML<br>6. <strong>Rendering</strong> — Browser parses HTML, fetches CSS/JS, builds DOM, paints the page",
+    code:null },
+
+  { t:"What is HTTP vs HTTPS? Why is HTTPS important?", subj:"CN", diff:"easy",
+    hint:"HTTPS adds TLS/SSL encryption. Prevents man-in-middle attacks. Important for passwords, payments.",
+    tip:"Relevant for any project with login pages or APIs.",
+    ans:"<strong>HTTP</strong> (HyperText Transfer Protocol) — transfers data between browser and server in <em>plain text</em>. Anyone on the network can read it.<br><br><strong>HTTPS</strong> (HTTP Secure) — same as HTTP but encrypted using <strong>TLS</strong> (Transport Layer Security). Data is encrypted before sending, decrypted on arrival.<br><br><strong>Why it matters:</strong><ul><li>Prevents man-in-the-middle attacks</li><li>Passwords and payment info stay private</li><li>Google ranks HTTPS sites higher (SEO)</li><li>Modern browsers show 'Not Secure' for HTTP sites</li></ul>",
+    code:null },
+
+  // OOP
+  { t:"What are the four pillars of OOP?", subj:"OOP", diff:"easy",
+    hint:"Encapsulation, Inheritance, Polymorphism, Abstraction. Simple real-world example for each.",
+    tip:"Don't just check if they name them — ask them to give one line example for each.",
+    ans:"<strong>1. Encapsulation</strong> — Bundling data and methods together; hiding internal state. (ATM machine: you press buttons, you don't see the logic inside.)<br><br><strong>2. Inheritance</strong> — Child class inherits properties from parent. (Dog extends Animal — gets eat() and sleep() for free.)<br><br><strong>3. Polymorphism</strong> — Same method name, different behaviour. (shape.draw() works differently for Circle vs Rectangle.)<br><br><strong>4. Abstraction</strong> — Hiding complex implementation, showing only what's needed. (You drive a car without knowing how the engine works.)",
+    code:`<span class="cm">// Polymorphism example</span>
+<span class="kw">class</span> <span class="fn">Animal</span> {
+  <span class="kw">void</span> <span class="fn">sound</span>() { System.out.<span class="fn">println</span>(<span class="st">"..."</span>); }
+}
+<span class="kw">class</span> <span class="fn">Dog</span> <span class="kw">extends</span> <span class="fn">Animal</span> {
+  <span class="kw">void</span> <span class="fn">sound</span>() { System.out.<span class="fn">println</span>(<span class="st">"Woof"</span>); } <span class="cm">// overriding</span>
+}
+<span class="kw">class</span> <span class="fn">Cat</span> <span class="kw">extends</span> <span class="fn">Animal</span> {
+  <span class="kw">void</span> <span class="fn">sound</span>() { System.out.<span class="fn">println</span>(<span class="st">"Meow"</span>); }
+}
+Animal a = <span class="kw">new</span> <span class="fn">Dog</span>();
+a.<span class="fn">sound</span>(); <span class="cm">// prints "Woof" — runtime polymorphism</span>` },
+
+  { t:"What is the difference between a class and an object?", subj:"OOP", diff:"easy",
+    hint:"Class is a blueprint/template. Object is an instance of that class. Like Car class vs your specific car.",
+    tip:"Simplest OOP question. If they can't answer this, check their language choice in project.",
+    ans:"<strong>Class</strong> — A blueprint or template that defines properties and methods. It exists in code but takes no memory by itself.<br><br><strong>Object</strong> — A specific instance of a class. It exists in memory with actual values.<br><br><strong>Analogy:</strong> Class is a cookie cutter; Object is the actual cookie. The cutter defines the shape, the cookie is real and has its own chocolate chips.",
+    code:`<span class="cm">// Class definition (blueprint)</span>
+<span class="kw">class</span> <span class="fn">Car</span> {
+  String brand;
+  <span class="kw">int</span> speed;
+  <span class="kw">void</span> <span class="fn">drive</span>() { System.out.<span class="fn">println</span>(<span class="st">"Driving"</span>); }
+}
+
+<span class="cm">// Objects (instances with real values)</span>
+Car car1 = <span class="kw">new</span> <span class="fn">Car</span>();
+car1.brand = <span class="st">"Toyota"</span>;
+
+Car car2 = <span class="kw">new</span> <span class="fn">Car</span>();
+car2.brand = <span class="st">"Honda"</span>;` },
+
+  { t:"What is the difference between method overloading and overriding?", subj:"OOP", diff:"medium",
+    hint:"Overloading: same name, different parameters (compile time). Overriding: same name in child class (runtime).",
+    tip:"Compile time vs runtime polymorphism is the key distinction here.",
+    ans:"<strong>Overloading (Compile-time polymorphism):</strong> Same method name in the SAME class, but different parameters (type or count). The compiler decides which one to call based on arguments.<br><br><strong>Overriding (Runtime polymorphism):</strong> Child class provides a different implementation of a method that exists in the parent class. Same name, same parameters. Decided at runtime.",
+    code:`<span class="cm">// OVERLOADING — same class, different params</span>
+<span class="kw">class</span> <span class="fn">Calculator</span> {
+  <span class="kw">int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b)         { <span class="kw">return</span> a+b; }
+  <span class="kw">double</span> <span class="fn">add</span>(<span class="kw">double</span> a, <span class="kw">double</span> b) { <span class="kw">return</span> a+b; }
+}
+
+<span class="cm">// OVERRIDING — child redefines parent method</span>
+<span class="kw">class</span> <span class="fn">Animal</span> {
+  <span class="kw">void</span> <span class="fn">speak</span>() { System.out.<span class="fn">println</span>(<span class="st">"..."</span>); }
+}
+<span class="kw">class</span> <span class="fn">Dog</span> <span class="kw">extends</span> <span class="fn">Animal</span> {
+  @Override
+  <span class="kw">void</span> <span class="fn">speak</span>() { System.out.<span class="fn">println</span>(<span class="st">"Woof!"</span>); }
+}` },
+
+  { t:"What is encapsulation? How do you achieve it?", subj:"OOP", diff:"easy",
+    hint:"Hiding internal data, exposing only through methods. Achieved via private fields + public getters/setters.",
+    tip:"Ask: 'Did you use private variables in your project? Why?'",
+    ans:"<strong>Encapsulation</strong> is the practice of hiding internal data of an object and allowing access only through well-defined methods (getters/setters).<br><br><strong>Why:</strong> Protects data from invalid values (e.g., setting age = -5). You control what gets in and out.<br><br><strong>How:</strong> Declare fields as <em>private</em>. Provide public <em>getter</em> (read) and <em>setter</em> (write) methods with validation if needed.",
+    code:`<span class="kw">class</span> <span class="fn">Student</span> {
+  <span class="kw">private</span> <span class="kw">int</span> age;   <span class="cm">// hidden from outside</span>
+
+  <span class="cm">// getter</span>
+  <span class="kw">public int</span> <span class="fn">getAge</span>() { <span class="kw">return</span> age; }
+
+  <span class="cm">// setter with validation</span>
+  <span class="kw">public void</span> <span class="fn">setAge</span>(<span class="kw">int</span> a) {
+    <span class="kw">if</span> (a > <span class="nm">0</span> && a < <span class="nm">120</span>) age = a;
+    <span class="kw">else</span> System.out.<span class="fn">println</span>(<span class="st">"Invalid age"</span>);
+  }
+}` },
+
+  // DS
+  { t:"What is the difference between an array and a linked list?", subj:"DS", diff:"easy",
+    hint:"Array: contiguous memory, O(1) access, fixed size. Linked list: dynamic, O(n) access, easier insert/delete.",
+    tip:"Ask which they'd use to store a list of students and why.",
+    ans:"<strong>Array:</strong><ul><li>Contiguous memory allocation</li><li>O(1) random access (index directly)</li><li>Fixed size (in most languages)</li><li>Inserting/deleting middle elements is O(n) — need to shift</li></ul><strong>Linked List:</strong><ul><li>Non-contiguous — nodes scattered in memory, linked by pointers</li><li>O(n) access — must traverse from head</li><li>Dynamic size — grow/shrink easily</li><li>O(1) insert/delete if you have the pointer</li></ul><strong>Use array when:</strong> you need fast access by index. <strong>Use linked list when:</strong> you need frequent insertions/deletions.",
+    code:`<span class="cm">// Linked list node in Java</span>
+<span class="kw">class</span> <span class="fn">Node</span> {
+  <span class="kw">int</span> data;
+  Node next;
+  <span class="fn">Node</span>(<span class="kw">int</span> d) { data = d; next = <span class="kw">null</span>; }
+}
+
+<span class="cm">// Creating a simple linked list: 1 -> 2 -> 3</span>
+Node head = <span class="kw">new</span> <span class="fn">Node</span>(<span class="nm">1</span>);
+head.next = <span class="kw">new</span> <span class="fn">Node</span>(<span class="nm">2</span>);
+head.next.next = <span class="kw">new</span> <span class="fn">Node</span>(<span class="nm">3</span>);` },
+
+  { t:"What is recursion? Give an example.", subj:"DS", diff:"easy",
+    hint:"Function calling itself with base case. Examples: factorial, Fibonacci, tree traversal.",
+    tip:"Ask them to trace factorial(3) step by step — reveals if they truly understand call stack.",
+    ans:"<strong>Recursion</strong> is when a function calls itself to solve a smaller version of the same problem. Every recursive function needs:<ul><li><strong>Base case</strong> — stopping condition (prevents infinite loop)</li><li><strong>Recursive case</strong> — function calls itself with smaller input</li></ul><strong>Trace of factorial(3):</strong><br>factorial(3) → 3 × factorial(2) → 3 × 2 × factorial(1) → 3 × 2 × 1 = 6<br><br><strong>Call stack:</strong> Each call adds a frame to the stack. When base case hits, frames pop off in reverse.",
+    code:`<span class="cm">// Factorial using recursion</span>
+<span class="kw">int</span> <span class="fn">factorial</span>(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">1</span>;        <span class="cm">// base case</span>
+  <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="nm">1</span>); <span class="cm">// recursive case</span>
+}
+<span class="cm">// factorial(3) = 3*2*1 = 6</span>
+
+<span class="cm">// Fibonacci</span>
+<span class="kw">int</span> <span class="fn">fib</span>(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n <= <span class="nm">1</span>) <span class="kw">return</span> n;
+  <span class="kw">return</span> <span class="fn">fib</span>(n-<span class="nm">1</span>) + <span class="fn">fib</span>(n-<span class="nm">2</span>);
+}` },
+
+  { t:"What is the difference between BFS and DFS?", subj:"DS", diff:"medium",
+    hint:"BFS: level-by-level, uses queue, shortest path. DFS: goes deep first, uses stack/recursion.",
+    tip:"Ask: 'Which would you use to find the shortest path in a map app?' — BFS, and why.",
+    ans:"<strong>BFS (Breadth-First Search):</strong> Explores all neighbours at current level before going deeper. Uses a <em>Queue</em>. Finds shortest path in unweighted graphs.<br><br><strong>DFS (Depth-First Search):</strong> Goes as deep as possible before backtracking. Uses a <em>Stack</em> (or recursion). Good for: finding if a path exists, topological sort, maze solving.<br><br><strong>When to use BFS:</strong> Shortest path, level-order traversal, web crawlers.<br><strong>When to use DFS:</strong> Checking connectivity, cycle detection, backtracking puzzles.",
+    code:`<span class="cm">// BFS using Queue</span>
+<span class="kw">void</span> <span class="fn">bfs</span>(<span class="kw">int</span> start) {
+  Queue&lt;Integer&gt; q = <span class="kw">new</span> LinkedList&lt;&gt;();
+  q.<span class="fn">add</span>(start);
+  visited[start] = <span class="kw">true</span>;
+  <span class="kw">while</span> (!q.<span class="fn">isEmpty</span>()) {
+    <span class="kw">int</span> node = q.<span class="fn">poll</span>();
+    <span class="kw">for</span> (<span class="kw">int</span> nb : adj[node])
+      <span class="kw">if</span> (!visited[nb]) { visited[nb]=<span class="kw">true</span>; q.<span class="fn">add</span>(nb); }
+  }
+}` },
+
+  { t:"What is the time complexity of binary search? When can you use it?", subj:"DS", diff:"easy",
+    hint:"O(log n). Only on sorted arrays. Much faster than linear search O(n) for large data.",
+    tip:"Ask: 'How would you search a name in a phonebook?' — leads naturally to binary search.",
+    ans:"<strong>Binary Search</strong> finds an element by repeatedly halving the search space.<br><br><strong>Time complexity: O(log n)</strong> — each step eliminates half the remaining elements.<br>For n=1,000,000: binary search takes ~20 steps. Linear search takes ~1,000,000 steps.<br><br><strong>Requirement:</strong> Array MUST be sorted.<br><br><strong>Approach:</strong> Compare target with middle element. If smaller → search left half. If larger → search right half. Repeat.",
+    code:`<span class="kw">int</span> <span class="fn">binarySearch</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target) {
+  <span class="kw">int</span> low = <span class="nm">0</span>, high = arr.length - <span class="nm">1</span>;
+
+  <span class="kw">while</span> (low <= high) {
+    <span class="kw">int</span> mid = (low + high) / <span class="nm">2</span>;
+
+    <span class="kw">if</span> (arr[mid] == target)  <span class="kw">return</span> mid;  <span class="cm">// found!</span>
+    <span class="kw">else if</span> (arr[mid] < target) low = mid + <span class="nm">1</span>;  <span class="cm">// go right</span>
+    <span class="kw">else</span>                     high = mid - <span class="nm">1</span>; <span class="cm">// go left</span>
+  }
+  <span class="kw">return</span> -<span class="nm">1</span>; <span class="cm">// not found</span>
+}` },
+
+  { t:"What is a tree? What is a binary search tree?", subj:"DS", diff:"medium",
+    hint:"Tree: hierarchical structure. BST: left < root < right. O(log n) search if balanced.",
+    tip:"Ask about real use case — file systems, folder structures are relatable.",
+    ans:"<strong>Tree:</strong> A hierarchical data structure with a root node, where each node has child nodes. No cycles. Used in: file systems, HTML DOM, org charts, decision trees.<br><br><strong>Binary Tree:</strong> Each node has at most 2 children (left, right).<br><br><strong>BST (Binary Search Tree):</strong> A binary tree where:<ul><li>Left subtree values < root</li><li>Right subtree values > root</li></ul>This property makes search O(log n) for a balanced tree — at each node, you eliminate half the remaining tree.",
+    code:`<span class="cm">// BST node and search</span>
+<span class="kw">class</span> <span class="fn">Node</span> {
+  <span class="kw">int</span> val; Node left, right;
+  <span class="fn">Node</span>(<span class="kw">int</span> v) { val = v; }
+}
+
+<span class="cm">// Search in BST — O(log n) if balanced</span>
+Node <span class="fn">search</span>(Node root, <span class="kw">int</span> key) {
+  <span class="kw">if</span> (root == <span class="kw">null</span> || root.val == key)
+    <span class="kw">return</span> root;
+  <span class="kw">if</span> (key < root.val)
+    <span class="kw">return</span> <span class="fn">search</span>(root.left, key);
+  <span class="kw">return</span> <span class="fn">search</span>(root.right, key);
+}` },
+
+  // DAA
+  { t:"What is time complexity? Why does it matter?", subj:"DAA", diff:"easy",
+    hint:"How runtime grows with input size. Big O notation. Matters for performance with large data.",
+    tip:"Ask: 'If your app has 10 users it's fine, but with 10,000 it crashes — what might be wrong?'",
+    ans:"<strong>Time complexity</strong> describes how the runtime of an algorithm grows as the input size (n) increases. Written in <strong>Big O notation</strong>.<br><br><strong>Common complexities (best → worst):</strong><br>O(1) — constant (array index access)<br>O(log n) — logarithmic (binary search)<br>O(n) — linear (loop through array)<br>O(n log n) — merge sort<br>O(n²) — nested loops<br>O(2ⁿ) — recursive Fibonacci<br><br><strong>Why it matters:</strong> An O(n²) algorithm on 10,000 items does 100 million operations. An O(n log n) does ~130,000. The difference is seconds vs hours.",
+    code:null },
+
+  { t:"What is the difference between O(n) and O(n²)?", subj:"DAA", diff:"easy",
+    hint:"O(n): linear, doubles with input. O(n²): quadratic, 4x with 2x input. Nested loops often cause O(n²).",
+    tip:"Give them n=1000: O(n) is 1000 ops, O(n²) is 1 million. Very tangible.",
+    ans:"<strong>O(n) — Linear:</strong> Runtime grows proportionally with input. Double input → double time. Usually a single loop.<br><br><strong>O(n²) — Quadratic:</strong> Runtime grows with the square of input. Double input → 4x time. Usually nested loops.<br><br><strong>Concrete example:</strong><br>n = 1,000: O(n) = 1,000 ops · O(n²) = 1,000,000 ops<br>n = 10,000: O(n) = 10,000 ops · O(n²) = 100,000,000 ops",
+    code:`<span class="cm">// O(n) — single loop</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < n; i++) {
+  System.out.<span class="fn">println</span>(arr[i]);
+}
+
+<span class="cm">// O(n²) — nested loop</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < n; i++) {
+  <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j < n; j++) {
+    <span class="cm">// this runs n × n = n² times</span>
+    System.out.<span class="fn">println</span>(arr[i] + arr[j]);
+  }
+}` },
+
+  { t:"What is a greedy algorithm? Give an example.", subj:"DAA", diff:"medium",
+    hint:"Makes locally optimal choice at each step. Examples: coin change, Dijkstra, Huffman coding.",
+    tip:"Coin change is the most relatable example. Ask how they'd give change for ₹73 with minimum coins.",
+    ans:"A <strong>greedy algorithm</strong> makes the locally optimal choice at each step, hoping to reach the global optimum. It never backtracks.<br><br><strong>Coin Change Example:</strong> Give ₹73 using minimum coins (₹50, ₹20, ₹10, ₹5, ₹2, ₹1).<br>Greedy: Pick largest coin ≤ remaining. ₹50 → ₹20 → ₹2 → ₹1 = 4 coins.<br><br><strong>Other examples:</strong> Activity Selection (schedule max non-overlapping tasks), Huffman Coding (compression), Dijkstra's shortest path.<br><br><strong>Limitation:</strong> Greedy doesn't always give the optimal answer (e.g., coin change with unusual denominations).",
+    code:`<span class="cm">// Greedy coin change</span>
+<span class="kw">int</span>[] coins = {<span class="nm">50</span>, <span class="nm">20</span>, <span class="nm">10</span>, <span class="nm">5</span>, <span class="nm">2</span>, <span class="nm">1</span>};
+<span class="kw">int</span> amount = <span class="nm">73</span>, count = <span class="nm">0</span>;
+
+<span class="kw">for</span> (<span class="kw">int</span> coin : coins) {
+  <span class="kw">while</span> (amount >= coin) {
+    amount -= coin;
+    count++;
+    System.out.<span class="fn">println</span>(<span class="st">"Used ₹"</span> + coin);
+  }
+}
+<span class="cm">// Output: ₹50, ₹20, ₹2, ₹1 = 4 coins</span>` },
+
+  { t:"What is dynamic programming? How is it different from recursion?", subj:"DAA", diff:"medium",
+    hint:"DP stores results of subproblems to avoid recalculation. Recursion may recompute same values.",
+    tip:"Ask Fibonacci with recursion vs DP — the recomputation visualization makes it clear.",
+    ans:"<strong>Dynamic Programming (DP)</strong> solves problems by breaking them into overlapping subproblems and storing results to avoid recomputation.<br><br><strong>Recursion problem:</strong> fib(5) calls fib(4) and fib(3). fib(4) calls fib(3) again — fib(3) is computed TWICE. Exponential time: O(2ⁿ).<br><br><strong>DP solution:</strong> Store each fib(n) result in an array (memoization). Each subproblem solved once. Time: O(n).<br><br><strong>Two approaches:</strong><br>Top-down (memoization): Recursion + cache.<br>Bottom-up (tabulation): Fill table iteratively from base cases.",
+    code:`<span class="cm">// Plain recursion — O(2ⁿ), very slow</span>
+<span class="kw">int</span> <span class="fn">fib</span>(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n <= <span class="nm">1</span>) <span class="kw">return</span> n;
+  <span class="kw">return</span> <span class="fn">fib</span>(n-<span class="nm">1</span>) + <span class="fn">fib</span>(n-<span class="nm">2</span>); <span class="cm">// recomputes!</span>
+}
+
+<span class="cm">// DP bottom-up — O(n), fast</span>
+<span class="kw">int</span> <span class="fn">fibDP</span>(<span class="kw">int</span> n) {
+  <span class="kw">int</span>[] dp = <span class="kw">new int</span>[n+<span class="nm">1</span>];
+  dp[<span class="nm">0</span>] = <span class="nm">0</span>; dp[<span class="nm">1</span>] = <span class="nm">1</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i <= n; i++)
+    dp[i] = dp[i-<span class="nm">1</span>] + dp[i-<span class="nm">2</span>]; <span class="cm">// stored!</span>
+  <span class="kw">return</span> dp[n];
+}` },
+
+  // SE
+  { t:"What is the SDLC? Name its phases.", subj:"SE", diff:"easy",
+    hint:"Requirements → Design → Implementation → Testing → Deployment → Maintenance.",
+    tip:"Ask which phase they spent the most time on in their project and why.",
+    ans:"<strong>SDLC (Software Development Life Cycle)</strong> is a structured process for planning, creating, testing, and delivering software.<br><br><strong>Phases:</strong><ul><li><strong>1. Requirements</strong> — What should the system do? (gather from client)</li><li><strong>2. System Design</strong> — Architecture, DB design, UI wireframes</li><li><strong>3. Implementation</strong> — Actual coding</li><li><strong>4. Testing</strong> — Unit, integration, UAT testing</li><li><strong>5. Deployment</strong> — Release to production</li><li><strong>6. Maintenance</strong> — Bug fixes, updates, enhancements</li></ul>Models: Waterfall (sequential), Agile (iterative sprints), Spiral.",
+    code:null },
+
+  { t:"What is version control? Why do we use Git?", subj:"SE", diff:"easy",
+    hint:"Tracks changes, enables collaboration, branching, rollback. Git is distributed VCS.",
+    tip:"Ask if they used Git for their project. If yes, ask what happens when there's a merge conflict.",
+    ans:"<strong>Version Control</strong> tracks changes to code over time, allowing collaboration and rollback to previous versions.<br><br><strong>Git</strong> is a distributed VCS — every developer has a full copy of the repository.<br><br><strong>Key benefits:</strong><ul><li>Multiple developers work simultaneously on branches</li><li>Full history — see who changed what, when, and why</li><li>Rollback — revert to any previous version</li><li>Branching — experiment without breaking main code</li></ul><strong>Common commands:</strong> git clone, git add, git commit, git push, git pull, git merge, git branch.",
+    code:`<span class="cm"># Common Git workflow</span>
+git clone https://github.com/user/repo.git
+git checkout -b feature/login    <span class="cm"># new branch</span>
+git add .                         <span class="cm"># stage changes</span>
+git commit -m <span class="st">"Add login page"</span>    <span class="cm"># save snapshot</span>
+git push origin feature/login     <span class="cm"># push to remote</span>
+git merge main                    <span class="cm"># merge main into branch</span>` },
+
+  { t:"What is Agile methodology?", subj:"SE", diff:"easy",
+    hint:"Iterative development in sprints. Frequent delivery, customer feedback, flexible to change.",
+    tip:"Even basic awareness is fine. Ask how their project was managed.",
+    ans:"<strong>Agile</strong> is a software development approach based on iterative development, collaboration, and flexibility to change.<br><br><strong>Core ideas:</strong><ul><li>Work in short <em>sprints</em> (1-4 weeks) and deliver working software frequently</li><li>Welcome changing requirements even late in development</li><li>Daily standups, sprint reviews, retrospectives</li><li>Customer collaboration over contract negotiation</li></ul><strong>vs Waterfall:</strong> Waterfall is sequential — all requirements first, then design, then code. Agile is iterative — build a little, show the customer, adjust, repeat.<br><br>Common Agile framework: <strong>Scrum</strong>.",
+    code:null },
+
+  { t:"What is the difference between functional and non-functional requirements?", subj:"SE", diff:"medium",
+    hint:"Functional: what system does. Non-functional: how well it does it (speed, security, scalability).",
+    tip:"Ask them to give one example of each from their own project.",
+    ans:"<strong>Functional Requirements</strong> — Define WHAT the system should do. Specific behaviours and functions.<br>Examples: User can log in, system sends email on registration, admin can delete users.<br><br><strong>Non-Functional Requirements</strong> — Define HOW WELL the system does it. Quality attributes.<br>Examples:<ul><li><strong>Performance</strong> — Page loads in under 2 seconds</li><li><strong>Scalability</strong> — System handles 10,000 concurrent users</li><li><strong>Security</strong> — Passwords must be hashed, data encrypted</li><li><strong>Availability</strong> — 99.9% uptime</li><li><strong>Usability</strong> — UI works on mobile devices</li></ul>",
+    code:null },
+
+  // CD
+  { t:"What are the phases of a compiler?", subj:"CD", diff:"easy",
+    hint:"Lexical → Syntax → Semantic → Intermediate Code → Optimization → Code Generation.",
+    tip:"Don't go deep — just check awareness. Ask what happens if you forget a semicolon.",
+    ans:"A compiler translates high-level source code into machine code through 6 phases:<br><br><strong>1. Lexical Analysis</strong> — Tokenizes source code (keywords, identifiers, operators)<br><strong>2. Syntax Analysis</strong> — Checks grammar, builds Parse Tree<br><strong>3. Semantic Analysis</strong> — Checks meaning (type checking, scope)<br><strong>4. Intermediate Code Generation</strong> — Platform-independent code (3-address code)<br><strong>5. Code Optimization</strong> — Makes code faster/smaller<br><strong>6. Code Generation</strong> — Produces actual machine code<br><br><strong>Missing semicolon:</strong> Caught in Syntax Analysis phase (grammar violation).",
+    code:`<span class="cm">// Source: int x = 5 + 3;</span>
+
+<span class="cm">// 1. Lexical: tokens produced</span>
+<span class="cm">// [INT] [x] [=] [5] [+] [3] [;]</span>
+
+<span class="cm">// 2. Syntax: parse tree built</span>
+<span class="cm">// AssignStmt → ID = Expr</span>
+<span class="cm">// Expr → Num + Num</span>
+
+<span class="cm">// 4. Intermediate code</span>
+<span class="cm">// t1 = 5 + 3</span>
+<span class="cm">// x = t1</span>
+
+<span class="cm">// 6. Machine code (x86)</span>
+<span class="cm">// MOV eax, 5</span>
+<span class="cm">// ADD eax, 3</span>
+<span class="cm">// MOV [x], eax</span>` },
+
+  { t:"What is the difference between a compiler and an interpreter?", subj:"CD", diff:"easy",
+    hint:"Compiler: translates entire program at once (C, Java). Interpreter: line by line (Python).",
+    tip:"Ask: 'Which does Python use?' — interpreter, and why it's slower than C.",
+    ans:"<strong>Compiler:</strong> Translates the ENTIRE source code into machine code at once, before execution. Produces an executable file. Faster execution. Errors reported all at once after full analysis.<br>Examples: C, C++, Java (to bytecode)<br><br><strong>Interpreter:</strong> Translates and executes code LINE BY LINE at runtime. No separate executable. Slower execution. Stops at first error.<br>Examples: Python, JavaScript (in browser), Ruby<br><br><strong>Hybrid:</strong> Java compiles to bytecode, then the JVM interprets bytecode — best of both worlds.",
+    code:`<span class="cm">// C — compiled</span>
+<span class="cm">// gcc hello.c -o hello   → produces binary</span>
+<span class="cm">// ./hello                → runs directly, very fast</span>
+
+<span class="cm">// Python — interpreted</span>
+<span class="cm">// python hello.py        → interprets line by line</span>
+<span class="cm">// slower but no compile step</span>
+
+<span class="cm">// Java — hybrid (compiled to bytecode)</span>
+<span class="cm">// javac Hello.java       → Hello.class (bytecode)</span>
+<span class="cm">// java Hello             → JVM interprets bytecode</span>` },
+
+  { t:"What is a token in lexical analysis?", subj:"CD", diff:"medium",
+    hint:"Smallest meaningful unit — keywords, identifiers, operators, literals. Lexer produces tokens.",
+    tip:"Ask them to identify tokens in: int x = 5 + 3;  — 7 tokens.",
+    ans:"A <strong>token</strong> is the smallest meaningful unit of a program, produced by the lexical analyser (lexer/scanner) during the first phase of compilation.<br><br><strong>Token types:</strong><ul><li><strong>Keywords</strong> — int, if, while, return, class</li><li><strong>Identifiers</strong> — variable names like x, total, studentName</li><li><strong>Literals</strong> — 5, 3.14, 'A', \"hello\"</li><li><strong>Operators</strong> — +, -, *, =, ==</li><li><strong>Punctuation</strong> — ;, {, }, (, )</li></ul><strong>Example:</strong> <code>int x = 5 + 3;</code> produces 7 tokens: [int][x][=][5][+][3][;]",
+    code:`<span class="cm">// Input: int x = 5 + 3;</span>
+
+<span class="cm">// Tokens produced by lexer:</span>
+<span class="cm">// Token 1: KEYWORD   → "int"</span>
+<span class="cm">// Token 2: IDENTIFIER → "x"</span>
+<span class="cm">// Token 3: OPERATOR  → "="</span>
+<span class="cm">// Token 4: INTEGER   → "5"</span>
+<span class="cm">// Token 5: OPERATOR  → "+"</span>
+<span class="cm">// Token 6: INTEGER   → "3"</span>
+<span class="cm">// Token 7: PUNCTUATION → ";"</span>
+
+<span class="cm">// Whitespace is ignored, comments are stripped</span>` },
+];
+
+// ══════════════════════════════════════════════
+// DATA — PROJECT QUESTIONS
+// ══════════════════════════════════════════════
+const projectQs = [
+  // General
+  { t:"Explain your project in 2 minutes. What problem does it solve?", type:"general", hint:"See if they can articulate the problem clearly. Real builders know the problem better than the solution.", tip:"This is the most important question. Listen for clarity vs confusion — tells you everything." },
+  { t:"What was the most challenging part of your project? How did you solve it?", type:"general", hint:"Look for: real problem, specific debugging effort, not generic answers like 'time management'.", tip:"Best question to assess actual work done. Vague answers = minimal contribution." },
+  { t:"If you had to redo your project, what would you do differently?", type:"general", hint:"Look for: technical reflection, awareness of bad decisions, understanding of scalability or design gaps.", tip:"Self-awareness and reflection is a strong hiring signal." },
+  { t:"Who did what in your team? What was your specific contribution?", type:"general", hint:"Probe if they actually built something or just copy-pasted. Ask follow-ups on their specific part.", tip:"Ask them to open GitHub or show files if needed. Non-contributor candidates fall apart here." },
+  { t:"Did you face any bugs that took more than a day to fix? What was it?", type:"general", hint:"Look for specific bug description. Great signal of actual hands-on work.", tip:"'Everything worked perfectly' is a red flag — real projects always have bugs." },
+  { t:"How would you explain your project to a non-technical person?", type:"general", hint:"Tests communication skills and conceptual clarity. Good engineers can simplify.", tip:"Soft skills check — important for client-facing roles at Jillellagroup." },
+
+  // Web
+  { t:"Why did you choose this tech stack for your project?", type:"web", hint:"Look for: practical reasoning over just 'teacher suggested it'. Bonus if they mention tradeoffs.", tip:"If they say 'teacher told us' — ask what they liked about learning it." },
+  { t:"How does your frontend communicate with your backend?", type:"web", hint:"REST API, fetch/axios calls, JSON data format, HTTP methods (GET, POST). Should know their own architecture.", tip:"If they blank here, it means they didn't fully build it. Ask them to describe one API call." },
+  { t:"Where do you store user data in your project? How is it structured?", type:"web", hint:"Should describe their DB schema, at least the main tables or collections they created.", tip:"Ask: 'Show me your database design' — if they can sketch it, they actually built it." },
+  { t:"What happens when a user logs in to your application? Step by step.", type:"web", hint:"Form submission → API call → DB check → session/JWT → redirect. They should trace their own flow.", tip:"Tests architecture understanding. Many freshers who copy code can't trace this flow." },
+  { t:"How did you handle errors in your application?", type:"web", hint:"Look for: try-catch, error responses to frontend, user-friendly messages. Even basic awareness is good.", tip:"Most freshers don't think about this. Even 'we just printed to console' is honest." },
+
+  // ML
+  { t:"What dataset did you use? How did you collect or obtain it?", type:"ml", hint:"Source, size, format. Did they clean it? Handle missing values? These reveal actual ML work.", tip:"Kaggle datasets are fine — but ask what preprocessing they did." },
+  { t:"Which ML algorithm did you use and why?", type:"ml", hint:"They should justify their choice, not just name it. Even 'it gave better accuracy' is a start.", tip:"Ask: 'Did you try other algorithms? How did you compare them?'" },
+  { t:"How did you evaluate your model's performance?", type:"ml", hint:"Accuracy, precision, recall, F1, confusion matrix. Which metric they chose reveals their understanding.", tip:"If they only mention accuracy, ask: 'What if 95% of data is one class?'" },
+  { t:"What is train-test split? Why did you use it?", type:"ml", hint:"80/20 or 70/30. Prevents overfitting. Model shouldn't be evaluated on data it trained on.", tip:"Basic ML hygiene. If they didn't split, ask why — good learning moment." },
+  { t:"Did you try to improve your model's accuracy? What did you do?", type:"ml", hint:"Feature engineering, hyperparameter tuning, trying different algorithms, more data, cross-validation.", tip:"Any honest attempt at improvement is a positive signal." },
+
+  // Mobile
+  { t:"Which platform did you build for and why? Android, iOS, or cross-platform?", type:"mobile", hint:"Ask the reasoning. Flutter/React Native for cross-platform is common. Java/Kotlin for native Android.", tip:"Most VTU projects are Android with Java. Ask what drew them to mobile development." },
+  { t:"How did you store data locally on the device in your app?", type:"mobile", hint:"SharedPreferences, SQLite, Room, local files. Should know what they used.", tip:"Reveals if they handled offline functionality — bonus points for thinking about it." },
+  { t:"How did your app communicate with any backend or API?", type:"mobile", hint:"Retrofit, Volley, fetch — HTTP calls. JSON parsing. Should describe one network call they made.", tip:"Ask them to trace what happens when the app opens — data load sequence." },
+];
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let activeSubj = "All", activeDiff = "All", searchVal = "";
+let order = syllabusQs.map((_, i) => i);
+let activeProjType = "all";
+let projOrder = projectQs.map((_, i) => i);
+let techStack = [];
+
+// ══════════════════════════════════════════════
+// SYLLABUS TAB
+// ══════════════════════════════════════════════
+const subjects = ["All", ...["DBMS","OS","CN","OOP","DS","DAA","SE","CD"]];
+const diffs = ["All","easy","medium"];
+
+function buildFilters() {
+  const sf = document.getElementById("subjFilters");
+  subjects.forEach(s => {
+    const el = document.createElement("button");
+    el.className = "pill" + (s === "All" ? " active" : "");
+    el.textContent = s;
+    el.onclick = () => {
+      activeSubj = s;
+      sf.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
+      el.classList.add("active"); renderSyllabus();
+    };
+    sf.appendChild(el);
+  });
+
+  const df = document.getElementById("diffFilters");
+  diffs.forEach(d => {
+    const el = document.createElement("button");
+    el.className = "pill" + (d === "All" ? " active" : "");
+    el.textContent = d === "All" ? "All" : d.charAt(0).toUpperCase() + d.slice(1);
+    el.onclick = () => {
+      activeDiff = d;
+      df.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
+      el.classList.add("active"); renderSyllabus();
+    };
+    df.appendChild(el);
+  });
+}
+
+function getFiltered() {
+  return order.filter(i => {
+    const q = syllabusQs[i];
+    return (activeSubj === "All" || q.subj === activeSubj)
+        && (activeDiff === "All" || q.diff === activeDiff)
+        && (!searchVal || q.t.toLowerCase().includes(searchVal.toLowerCase()));
+  });
+}
+
+function renderSyllabus() {
+  const filtered = getFiltered();
+  document.getElementById("showing").textContent = filtered.length;
+  const list = document.getElementById("qlist");
+  if (!filtered.length) { list.innerHTML = '<div class="empty">No questions match — try adjusting filters</div>'; return; }
+  list.innerHTML = filtered.map((qi, idx) => {
+    const q = syllabusQs[qi];
+    const hasCode = !!q.code;
+    return `
+    <div class="qcard" id="sq${qi}" onclick="toggleQ('sq${qi}')">
+      <div class="qcard-top">
+        <span class="qnum">${String(idx+1).padStart(2,"0")}</span>
+        <div class="qtext">${q.t}</div>
+        <div class="qright">
+          <span class="badge badge-syl">${q.subj}</span>
+          <span class="badge" style="background:var(--${q.diff==="easy"?"easy":q.diff==="medium"?"medium":"hard"}-bg);color:var(--${q.diff==="easy"?"easy":q.diff==="medium"?"medium":"hard"}-text)">${q.diff}</span>
+        </div>
+      </div>
+      <div class="expand-row"><span class="expand-chevron">▾</span><span class="expand-lbl">answer & approach</span></div>
+      <div class="hint-box">
+        <div class="ans-tabs">
+          <button class="ans-tab-btn active" onclick="switchAnsTab(event,'sq${qi}','hint')">What to look for</button>
+          <button class="ans-tab-btn" onclick="switchAnsTab(event,'sq${qi}','ans')">✓ Answer</button>
+          ${hasCode ? `<button class="ans-tab-btn" onclick="switchAnsTab(event,'sq${qi}','code')">{ } Code</button>` : ""}
+        </div>
+        <div class="ans-panels">
+          <div class="ans-panel active" id="sq${qi}-hint">
+            <div class="ans-text" style="background:transparent;padding:8px 0 0">${q.hint}</div>
+            <div class="panel-tip" style="margin-top:8px"><strong>Panelist note:</strong> ${q.tip}</div>
+          </div>
+          <div class="ans-panel" id="sq${qi}-ans">
+            <div class="ans-text">${q.ans}</div>
+          </div>
+          ${hasCode ? `<div class="ans-panel" id="sq${qi}-code"><div class="ans-code-block">${q.code}</div></div>` : ""}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function shuffle() {
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  renderSyllabus();
+}
+
+document.getElementById("searchInput").addEventListener("input", e => { searchVal = e.target.value; renderSyllabus(); });
+
+// ══════════════════════════════════════════════
+// PROJECT TAB
+// ══════════════════════════════════════════════
+const projTypes = { all: "All", general: "General", web: "Web / App", ml: "ML / AI", mobile: "Mobile" };
+
+function buildProjFilters() {
+  const pf = document.getElementById("projTypeFilters");
+  Object.entries(projTypes).forEach(([key, label]) => {
+    const el = document.createElement("button");
+    el.className = "pill" + (key === "all" ? " active" : "");
+    el.textContent = label;
+    el.onclick = () => {
+      activeProjType = key;
+      pf.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
+      el.classList.add("active"); renderProject();
+    };
+    pf.appendChild(el);
+  });
+}
+
+function renderProject() {
+  const filtered = projOrder.filter(i => activeProjType === "all" || projectQs[i].type === activeProjType);
+  document.getElementById("projShowing").textContent = filtered.length;
+  const list = document.getElementById("projList");
+  if (!filtered.length) { list.innerHTML = '<div class="empty">No questions match</div>'; return; }
+  list.innerHTML = filtered.map((qi, idx) => {
+    const q = projectQs[qi];
+    const typeLabel = projTypes[q.type] || q.type;
+    return `
+    <div class="qcard" id="pq${qi}" onclick="toggleQ('pq${qi}')">
+      <div class="qcard-top">
+        <span class="qnum">${String(idx+1).padStart(2,"0")}</span>
+        <div class="qtext">${q.t}</div>
+        <div class="qright">
+          <span class="badge badge-proj">${typeLabel}</span>
+        </div>
+      </div>
+      <div class="expand-row"><span class="expand-chevron">▾</span><span class="expand-lbl">what to look for</span></div>
+      <div class="hint-box">
+        <div class="hint-lbl">// look for</div>
+        <div class="hint-text">${q.hint}</div>
+        <div class="panel-tip"><strong>Panelist note:</strong> ${q.tip}</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ══════════════════════════════════════════════
+// GENERATE TAB
+// ══════════════════════════════════════════════
+function addTech() {
+  const inp = document.getElementById("techInput");
+  const val = inp.value.trim();
+  if (!val || techStack.includes(val)) { inp.value = ""; return; }
+  techStack.push(val); inp.value = "";
+  renderChips(); updateGenBtn();
+}
+
+function addStack(arr) {
+  arr.forEach(t => { if (!techStack.includes(t)) techStack.push(t); });
+  renderChips(); updateGenBtn();
+}
+
+function removeTech(t) {
+  techStack = techStack.filter(x => x !== t);
+  renderChips(); updateGenBtn();
+}
+
+function renderChips() {
+  document.getElementById("techChips").innerHTML = techStack.map(t =>
+    `<div class="tech-chip">${t} <button onclick="removeTech('${t}')">✕</button></div>`
+  ).join("");
+}
+
+function updateGenBtn() {
+  document.getElementById("genBtn").disabled = techStack.length === 0;
+}
+
+async function generateQuestions() {
+  if (!techStack.length) return;
+  const out = document.getElementById("genOutput");
+  out.innerHTML = `<div class="loading-msg"><span class="loading-spinner"></span> Generating questions for ${techStack.join(", ")}…</div>`;
+
+  const prompt = `You are an expert technical interviewer at a software company. You are interviewing a fresher from VTU (Visvesvaraya Technological University, India) who is a 2026 BE Computer Science graduate. Their final year project uses this tech stack: ${techStack.join(", ")}.
+
+Generate exactly 10 interview questions to ask this fresher ABOUT THEIR PROJECT specifically. Questions should:
+- Be basic to medium difficulty (this is a fresher's first job interview)
+- Relate directly to how the technology is used in a project context
+- Test understanding of WHY they used a technology, not just that they used it
+- Include questions that reveal if they actually built the project vs just submitted it
+
+Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format:
+[{"q":"question text","tech":"which tech this is about","hint":"1-2 sentences on what good answer looks like"}]`;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
+    const clean = raw.replace(/```json|```/g, "").trim();
+    const qs = JSON.parse(clean);
+
+    out.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:12px;color:var(--muted)">Generated <strong style="color:var(--accent)">${qs.length}</strong> questions for: ${techStack.map(t=>`<span style="font-size:11px;padding:2px 8px;border-radius:100px;background:var(--gen-tag-bg);color:var(--gen-tag-text);margin-left:4px">${t}</span>`).join("")}</span>
+      </div>
+      <div class="generated-qs">${qs.map((q, i) => `
+        <div class="gen-qcard" id="gq${i}" onclick="toggleQ('gq${i}')">
+          <div class="gen-qcard-top">
+            <span class="qnum">${String(i+1).padStart(2,"0")}</span>
+            <div class="gen-qtext">${q.q}</div>
+            <span class="gen-tech-tag">${q.tech}</span>
+          </div>
+          <div class="expand-row" style="padding-left:22px"><span class="expand-chevron">▾</span><span class="expand-lbl">what to look for</span></div>
+          <div class="hint-box" style="margin-left:22px">
+            <div class="hint-lbl">// look for</div>
+            <div class="hint-text">${q.hint}</div>
+          </div>
+        </div>`).join("")}
+      </div>`;
+  } catch (e) {
+    out.innerHTML = `<div class="empty">Could not generate questions. Please try again.</div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// QUICK BRIEF
+// ══════════════════════════════════════════════
+function quickBrief(topic) {
+  document.getElementById("briefInput").value = topic;
+  getBrief();
+}
+
+async function getBrief() {
+  const inp = document.getElementById("briefInput");
+  const topic = inp.value.trim();
+  if (!topic) return;
+
+  const out = document.getElementById("briefOutput");
+  out.innerHTML = `<div class="loading-msg"><span class="loading-spinner"></span> Briefing you on <strong>${topic}</strong>…</div>`;
+
+  const prompt = `You are briefing a non-expert technical interviewer in under 60 seconds about a technology they just saw on a fresher's resume. The technology is: "${topic}".
+
+Give them ONLY what they need to not look clueless and ask smart questions. Be concise and practical.
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "topic": "${topic}",
+  "category": "one of: Frontend, Backend, Database, DevOps, ML/AI, Mobile, Language, Tool",
+  "one_liner": "One sentence: what this is in plain English. No jargon.",
+  "what_it_does": "2-3 sentences explaining what problem it solves and why developers use it. Relate to something familiar.",
+  "fresher_reality": "1-2 sentences on what a VTU fresher likely actually did with this — what's realistic vs what they might be exaggerating.",
+  "questions": [
+    {"q": "question to ask the candidate", "why": "what a good answer reveals"},
+    {"q": "question to ask the candidate", "why": "what a good answer reveals"},
+    {"q": "question to ask the candidate", "why": "what a good answer reveals"}
+  ],
+  "red_flag": "One sentence: what vague or wrong answer would signal they just put it on resume without using it."
+}`;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
+    const clean = raw.replace(/```json|```/g, "").trim();
+    const b = JSON.parse(clean);
+
+    out.innerHTML = `
+    <div class="brief-result">
+      <div class="brief-topic-bar">
+        <span class="brief-topic-name">${b.topic}</span>
+        <span class="brief-tag">${b.category}</span>
+      </div>
+      <div class="brief-body">
+
+        <div>
+          <div class="brief-section-title">// what it is</div>
+          <div class="brief-text">${b.one_liner}</div>
+        </div>
+
+        <hr class="brief-divider">
+
+        <div>
+          <div class="brief-section-title">// what it actually does</div>
+          <div class="brief-text">${b.what_it_does}</div>
+        </div>
+
+        <hr class="brief-divider">
+
+        <div>
+          <div class="brief-section-title">// fresher reality check</div>
+          <div class="brief-warn">${b.fresher_reality}</div>
+        </div>
+
+        <hr class="brief-divider">
+
+        <div>
+          <div class="brief-section-title">// 3 questions you can ask</div>
+          <div class="brief-qs">
+            ${b.questions.map((q, i) => `
+              <div class="brief-q">
+                <span class="brief-q-num">${String(i+1).padStart(2,"0")}</span>
+                <div>
+                  <div style="font-weight:500">${q.q}</div>
+                  <div style="font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.6">→ ${q.why}</div>
+                </div>
+              </div>`).join("")}
+          </div>
+        </div>
+
+        <hr class="brief-divider">
+
+        <div>
+          <div class="brief-section-title">// 🚩 red flag to watch for</div>
+          <div class="brief-warn" style="border-left-color: #E24B4A; background: var(--hard-bg);">
+            <span style="color:var(--hard-text)">${b.red_flag}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+  } catch(e) {
+    out.innerHTML = `<div class="empty">Could not fetch brief. Try again.</div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// ══════════════════════════════════════════════
+function toggleQ(id) {
+  document.getElementById(id)?.classList.toggle("open");
+}
+
+function switchAnsTab(e, cardId, tab) {
+  e.stopPropagation();
+  const card = document.getElementById(cardId);
+  card.querySelectorAll(".ans-tab-btn").forEach(b => b.classList.remove("active"));
+  card.querySelectorAll(".ans-panel").forEach(p => p.classList.remove("active"));
+  e.target.classList.add("active");
+  const panel = document.getElementById(`${cardId}-${tab}`);
+  if (panel) panel.classList.add("active");
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(s => {
+    s.classList.remove("active");
+    s.style.display = "none";
+  });
+  btn.classList.add("active");
+  const sec = document.getElementById("sec-" + name);
+  sec.style.display = "block";
+  sec.classList.add("active");
+}
+
+function toggleTheme() {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  document.getElementById("btn-light").classList.toggle("active", dark);
+  document.getElementById("btn-dark").classList.toggle("active", !dark);
+}
+
+// ══════════════════════════════════════════════
+// RESUME ANALYSER
+// ══════════════════════════════════════════════
+let resumeFile = null;
+let resumeText = "";
+
+function onDrag(e, over) {
+  e.preventDefault();
+  document.getElementById("uploadZone").classList.toggle("drag", over);
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  onDrag(e, false);
+  const f = e.dataTransfer.files[0];
+  if (f) setFile(f);
+}
+
+function onFileSelect(e) {
+  const f = e.target.files[0];
+  if (f) setFile(f);
+}
+
+function setFile(f) {
+  resumeFile = f;
+  const kb = (f.size / 1024).toFixed(0);
+  document.getElementById("fileChosen").style.display = "flex";
+  document.getElementById("fileChosen").innerHTML = `
+    <span class="file-icon">📄</span>
+    <span class="file-name">${f.name}</span>
+    <span class="file-size">${kb} KB</span>
+    <button class="file-remove" onclick="clearFile()">✕</button>`;
+  document.getElementById("analyzeBtn").disabled = false;
+}
+
+function clearFile() {
+  resumeFile = null; resumeText = "";
+  document.getElementById("fileChosen").style.display = "none";
+  document.getElementById("fileChosen").innerHTML = "";
+  document.getElementById("analyzeBtn").disabled = true;
+  document.getElementById("resumeFile").value = "";
+  document.getElementById("resumeOutput").innerHTML = "";
+}
+
+async function readFileAsText(file) {
+  return new Promise((resolve, reject) => {
+    if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
+      // Read PDF as base64 for Claude
+      const reader = new FileReader();
+      reader.onload = e => resolve({ type: "pdf", data: e.target.result.split(",")[1] });
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    } else {
+      // Plain text / docx fallback — read as text
+      const reader = new FileReader();
+      reader.onload = e => resolve({ type: "text", data: e.target.result });
+      reader.onerror = reject;
+      reader.readAsText(file);
+    }
+  });
+}
+
+async function analyzeResume() {
+  if (!resumeFile) return;
+  const out = document.getElementById("resumeOutput");
+  out.innerHTML = `<div class="loading-msg"><span class="loading-spinner"></span> Reading resume and building candidate profile…</div>`;
+  document.getElementById("analyzeBtn").disabled = true;
+
+  try {
+    const fileData = await readFileAsText(resumeFile);
+
+    let msgContent;
+    if (fileData.type === "pdf") {
+      msgContent = [
+        { type: "document", source: { type: "base64", media_type: "application/pdf", data: fileData.data } },
+        { type: "text", text: buildResumePrompt() }
+      ];
+    } else {
+      msgContent = [{ type: "text", text: `Here is the resume text:\n\n${fileData.data}\n\n${buildResumePrompt()}` }];
+    }
+
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2500,
+        messages: [{ role: "user", content: msgContent }]
+      })
+    });
+
+    const data = await res.json();
+    const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
+    const clean = raw.replace(/```json|```/g, "").trim();
+    const profile = JSON.parse(clean);
+    renderCandidateProfile(profile);
+  } catch(e) {
+    out.innerHTML = `<div class="empty">Could not analyse resume. Make sure it's a readable PDF or text file and try again.</div>`;
+    document.getElementById("analyzeBtn").disabled = false;
+  }
+}
+
+function buildResumePrompt() {
+  return `You are an expert technical interviewer preparing to interview a VTU 2026 BE Computer Science fresher. Analyse this resume carefully.
+
+Extract ALL relevant information and respond ONLY with a valid JSON object (no markdown, no backticks):
+
+{
+  "name": "candidate's full name or 'Candidate' if not found",
+  "college": "college name if found",
+  "cgpa": "CGPA/percentage if mentioned, else null",
+  "skills": {
+    "strong": ["technologies they clearly know well — listed under Skills/Technical Skills with depth"],
+    "medium": ["technologies mentioned in projects but not highlighted"],
+    "mentioned": ["buzzwords or tools briefly listed without evidence"]
+  },
+  "projects": [
+    {
+      "title": "project name",
+      "description": "what it does in 1-2 sentences",
+      "techs": ["tech1", "tech2"],
+      "depth": "deep/medium/surface — your estimate of how deeply they know this project"
+    }
+  ],
+  "concerns": [
+    {
+      "text": "a specific concern or thing to probe — e.g. 'Claims to know Kubernetes but no projects show it'",
+      "level": "yellow or red"
+    }
+  ],
+  "questions": [
+    {
+      "q": "question tailored to THIS candidate based on what's on their resume",
+      "category": "Project / Technical / Behavioural",
+      "based_on": "e.g. 'Their claim of knowing React' or 'Project 1: E-commerce app'",
+      "why": "what a good answer tells you"
+    }
+  ]
+}
+
+Generate at least 12 questions. Make them specific to this candidate — not generic. If they mentioned a specific project, ask about it. If they claim a skill, test it. Mix project questions, technical depth questions, and at least 2 behavioural questions.`;
+}
+
+function renderCandidateProfile(p) {
+  const out = document.getElementById("resumeOutput");
+  const initials = p.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0,2);
+
+  const skillSection = (arr, cls, label) => arr.length ? `
+    <div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:600">${label}</div>
+      <div class="skill-chips">${arr.map(s=>`<span class="skill-chip ${cls}">${s}</span>`).join("")}</div>
+    </div>` : "";
+
+  const concerns = p.concerns?.length ? `
+    <div>
+      <div class="profile-section-title">// things to probe</div>
+      ${p.concerns.map(c=>`
+        <div class="concern-item">
+          <div class="concern-dot ${c.level==="red"?"red":""}"></div>
+          <div>${c.text}</div>
+        </div>`).join("")}
+    </div>` : "";
+
+  const projects = p.projects?.length ? `
+    <div>
+      <div class="profile-section-title">// projects detected</div>
+      ${p.projects.map(pr=>`
+        <div class="project-item">
+          <div class="project-item-title">${pr.title} <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:6px">${pr.depth} knowledge</span></div>
+          <div class="project-item-desc">${pr.description}</div>
+          <div class="project-item-techs">${pr.techs.map(t=>`<span class="project-tech">${t}</span>`).join("")}</div>
+        </div>`).join("")}
+    </div>` : "";
+
+  const catColors = { "Project":"badge-proj", "Technical":"badge-syl", "Behavioural":"badge-core" };
+
+  const questions = p.questions?.length ? `
+    <div class="section-heading">Personalised Question List <span class="section-heading-line"></span></div>
+    <div class="cand-qs">${p.questions.map((q,i)=>`
+      <div class="cand-qcard" id="cq${i}" onclick="this.classList.toggle('open')">
+        <div class="cand-qtop">
+          <span class="qnum">${String(i+1).padStart(2,"0")}</span>
+          <div class="cand-qtext">${q.q}</div>
+          <div class="cand-qright">
+            <span class="badge ${catColors[q.category]||"badge-core"}">${q.category}</span>
+            <span style="font-size:9px;color:var(--dim);text-align:right;max-width:100px;line-height:1.3">${q.based_on}</span>
+          </div>
+        </div>
+        <div class="cand-why">
+          <div class="cand-why-label">// why ask this</div>
+          ${q.why}
+        </div>
+      </div>`).join("")}
+    </div>` : "";
+
+  out.innerHTML = `
+    <div class="candidate-card">
+      <div class="candidate-header">
+        <div class="candidate-avatar">${initials}</div>
+        <div>
+          <div class="candidate-name">${p.name}</div>
+          <div class="candidate-meta">${[p.college, p.cgpa ? "CGPA: "+p.cgpa : null].filter(Boolean).join(" · ") || "VTU 2026"}</div>
+        </div>
+      </div>
+      <div class="candidate-body">
+        <div>
+          <div class="profile-section-title">// skills detected</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            ${skillSection(p.skills?.strong||[], "strong", "Strong evidence")}
+            ${skillSection(p.skills?.medium||[], "medium", "Used in projects")}
+            ${skillSection(p.skills?.mentioned||[], "mentioned", "Just mentioned")}
+          </div>
+        </div>
+        ${projects}
+        ${concerns}
+      </div>
+    </div>
+    ${questions}`;
+
+  document.getElementById("analyzeBtn").disabled = false;
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+buildFilters();
+buildProjFilters();
+renderSyllabus();
+renderProject();
+// hide all sections except first on load
+document.querySelectorAll(".section").forEach((s,i) => {
+  if (i > 0) s.style.display = "none";
+});
+</script>
+</body>
+</html>
