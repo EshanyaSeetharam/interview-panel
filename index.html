@@ -1470,11 +1470,12 @@ Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format
       })
     });
     const data = await res.json();
+    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
     const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
     const clean = raw.replace(/```json|```/g, "").trim();
     const qs = JSON.parse(clean);
 
-    out.innerHTML = `
+     = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:12px;color:var(--muted)">Generated <strong style="color:var(--accent)">${qs.length}</strong> questions for: ${techStack.map(t=>`<span style="font-size:11px;padding:2px 8px;border-radius:100px;background:var(--gen-tag-bg);color:var(--gen-tag-text);margin-left:4px">${t}</span>`).join("")}</span>
       </div>
@@ -1543,6 +1544,7 @@ Respond ONLY with valid JSON, no markdown, no backticks:
       })
     });
     const data = await res.json();
+    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
     const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
     const clean = raw.replace(/```json|```/g, "").trim();
     const b = JSON.parse(clean);
@@ -1733,12 +1735,13 @@ async function analyzeResume() {
     });
 
     const data = await res.json();
+    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
     const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
     const clean = raw.replace(/```json|```/g, "").trim();
     const profile = JSON.parse(clean);
     renderCandidateProfile(profile);
   } catch(e) {
-    out.innerHTML = `<div class="empty">Could not analyse resume. Make sure it's a readable PDF or text file and try again.</div>`;
+    out.innerHTML = `<div class="empty">Could not analyse resume: ${e.message || "Unknown error"}. Make sure it's a readable PDF or text file and try again.</div>`;
     document.getElementById("analyzeBtn").disabled = false;
   }
 }
