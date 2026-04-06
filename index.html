@@ -938,9 +938,22 @@ function changePanelist() {
   }
 }
 
+// Default students — seeded on first visit
+const DEFAULT_STUDENTS = [
+  { id: "s_1", name: "Anushrava Bhat", college: "NMAMIT Nitte", created_at: "2026-04-06T00:00:00Z" },
+  { id: "s_2", name: "Priti Rai", college: "SJEC Mangalore", created_at: "2026-04-06T00:00:00Z" },
+  { id: "s_3", name: "Rahul Shetty", college: "SDMCET Dharwad", created_at: "2026-04-06T00:00:00Z" },
+  { id: "s_4", name: "Sneha Kulkarni", college: "RV College Bangalore", created_at: "2026-04-06T00:00:00Z" },
+  { id: "s_5", name: "Karthik Nayak", college: "MIT Manipal", created_at: "2026-04-06T00:00:00Z" }
+];
+
 // Students
 function loadStudents() {
   students = JSON.parse(localStorage.getItem("eval_students") || "[]");
+  if (!students.length) {
+    students = DEFAULT_STUDENTS;
+    saveStudents();
+  }
   renderStudentDropdown();
 }
 
