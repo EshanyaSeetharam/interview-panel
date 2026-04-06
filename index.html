@@ -553,8 +553,9 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
 /* EVALUATION SYSTEM                             */
 /* ══════════════════════════════════════════════ */
 
-/* panelist & student controls in header */
-.eval-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+/* ── EVALUATION TOOLBAR ── */
+.eval-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 0; margin-bottom: 0; }
+.eval-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .panelist-tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; background: var(--accent-light); color: var(--accent); font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
 .panelist-tag:hover { border-color: var(--accent); }
 
@@ -659,6 +660,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
 .past-eval-score { font-size: 14px; font-weight: 700; color: #297691; }
 
 @media (max-width: 580px) {
+  .eval-toolbar { flex-direction: column; align-items: stretch; gap: 6px; }
   .eval-controls { gap: 6px; }
   .eval-bar-inner { flex-direction: column; align-items: stretch; }
   .eval-bar-actions { justify-content: stretch; }
@@ -678,19 +680,9 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
       <p class="subtitle">Syllabus-based + project-based questions for college technical rounds.</p>
     </div>
     <div class="header-right">
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-        <div class="theme-toggle" onclick="toggleTheme()">
-          <button class="toggle-btn active" id="btn-light">☀️</button>
-          <button class="toggle-btn" id="btn-dark">🌙</button>
-        </div>
-        <button class="export-btn" onclick="exportExcel()">Export Excel</button>
-      </div>
-      <div class="eval-controls">
-        <span class="panelist-tag" id="panelistTag" onclick="changePanelist()" title="Click to change">Panelist</span>
-        <select class="student-select" id="studentSelect" onchange="onStudentChange()">
-          <option value="">-- Select Student --</option>
-        </select>
-        <button class="add-student-btn" onclick="openAddStudent()">+ Add</button>
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <button class="toggle-btn active" id="btn-light">☀️</button>
+        <button class="toggle-btn" id="btn-dark">🌙</button>
       </div>
       <div class="stats-row">
         <div class="stat"><div class="stat-num" id="hdrCount">75+</div><div class="stat-label">Questions</div></div>
@@ -700,6 +692,18 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
     </div>
   </div>
 </header>
+
+<!-- EVALUATION TOOLBAR -->
+<div class="eval-toolbar">
+  <div class="eval-controls">
+    <span class="panelist-tag" id="panelistTag" onclick="changePanelist()" title="Click to change">Panelist</span>
+    <select class="student-select" id="studentSelect" onchange="onStudentChange()">
+      <option value="">-- Select Student --</option>
+    </select>
+    <button class="add-student-btn" onclick="openAddStudent()">+ Add</button>
+  </div>
+  <button class="export-btn" onclick="exportExcel()">Export Excel</button>
+</div>
 
 <!-- TABS -->
 <div class="tabs">
