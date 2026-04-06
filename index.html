@@ -565,8 +565,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
         <button class="toggle-btn" id="btn-dark">🌙</button>
       </div>
       <div class="stats-row">
-        <div class="stat"><div class="stat-num" id="hdrCount">60+</div><div class="stat-label">Questions</div></div>
-        <div class="stat"><div class="stat-num">8</div><div class="stat-label">Subjects</div></div>
+        <div class="stat"><div class="stat-num" id="hdrCount">75+</div><div class="stat-label">Questions</div></div>
+        <div class="stat"><div class="stat-num">10</div><div class="stat-label">Subjects</div></div>
         <div class="stat"><div class="stat-num">AI</div><div class="stat-label">Project Gen</div></div>
       </div>
     </div>
@@ -1229,6 +1229,138 @@ git merge main                    <span class="cm"># merge main into branch</spa
 <span class="cm">// Token 7: PUNCTUATION → ";"</span>
 
 <span class="cm">// Whitespace is ignored, comments are stripped</span>` },
+
+  // AI/ML
+  { t:"What is the difference between supervised and unsupervised learning?", subj:"AI/ML", diff:"easy",
+    hint:"Supervised: labelled data, predicts output (classification/regression). Unsupervised: no labels, finds patterns (clustering). Ask for an example of each.",
+    tip:"Foundational ML question — if they can give a real-world example (spam detection vs customer segmentation), they understand it.",
+    ans:"<strong>Supervised learning</strong> uses labelled training data — the model learns from input-output pairs. Examples: spam detection, image classification, house price prediction.<br><br><strong>Unsupervised learning</strong> uses unlabelled data — the model discovers hidden patterns on its own. Examples: customer segmentation, anomaly detection, topic modelling.<br><br><strong>Key difference:</strong> Supervised has a 'right answer' to learn from; unsupervised does not.",
+    code:`<span class="cm"># Supervised — Linear Regression</span>
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> <span class="fn">LinearRegression</span>
+model = <span class="fn">LinearRegression</span>()
+model.<span class="fn">fit</span>(X_train, y_train)  <span class="cm"># labelled data</span>
+
+<span class="cm"># Unsupervised — K-Means Clustering</span>
+<span class="kw">from</span> sklearn.cluster <span class="kw">import</span> <span class="fn">KMeans</span>
+model = <span class="fn">KMeans</span>(n_clusters=<span class="nm">3</span>)
+model.<span class="fn">fit</span>(X)  <span class="cm"># no labels needed</span>` },
+
+  { t:"What is overfitting and how do you prevent it?", subj:"AI/ML", diff:"easy",
+    hint:"Model memorises training data, performs poorly on new data. Prevention: more data, regularisation, dropout, cross-validation, simpler model.",
+    tip:"Key concept. If they've actually trained a model, they'll have faced this. Ask what they did in their project.",
+    ans:"<strong>Overfitting</strong> happens when a model learns the training data too well — including noise and outliers — so it performs great on training data but poorly on unseen data.<br><br><strong>Signs:</strong> High training accuracy, low test/validation accuracy.<br><br><strong>Prevention:</strong> (1) Use more training data, (2) Regularisation (L1/L2), (3) Dropout in neural networks, (4) Cross-validation, (5) Early stopping, (6) Use a simpler model.",
+    code:`<span class="cm"># Detecting overfitting</span>
+train_acc = model.<span class="fn">score</span>(X_train, y_train)  <span class="cm"># 99%</span>
+test_acc  = model.<span class="fn">score</span>(X_test, y_test)    <span class="cm"># 62% ← overfitting!</span>
+
+<span class="cm"># Fix: Add regularisation</span>
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> <span class="fn">Ridge</span>
+model = <span class="fn">Ridge</span>(alpha=<span class="nm">1.0</span>)  <span class="cm"># L2 regularisation</span>
+
+<span class="cm"># Fix: Dropout in neural network</span>
+model.<span class="fn">add</span>(<span class="fn">Dropout</span>(<span class="nm">0.3</span>))  <span class="cm"># randomly drops 30% neurons</span>` },
+
+  { t:"Explain the difference between classification and regression.", subj:"AI/ML", diff:"easy",
+    hint:"Classification: predicts discrete categories (yes/no, cat/dog). Regression: predicts continuous values (price, temperature). Both are supervised.",
+    tip:"Simple but important. Ask them which one their project used and why.",
+    ans:"<strong>Classification:</strong> Predicts a category/label. Output is discrete — e.g., spam or not spam, which digit (0-9), disease or healthy.<br><br><strong>Regression:</strong> Predicts a continuous number. Output is a value — e.g., house price, temperature, stock price.<br><br>Both are supervised learning. The choice depends on what you're predicting: if it's a category → classification; if it's a number → regression." },
+
+  { t:"What is a confusion matrix and what does it tell you?", subj:"AI/ML", diff:"medium",
+    hint:"Table showing TP, TN, FP, FN. Derives accuracy, precision, recall, F1. Ask why accuracy alone can be misleading (imbalanced datasets).",
+    tip:"If they've evaluated a classification model properly, they know this. If they only mention 'accuracy', probe deeper.",
+    ans:"A <strong>confusion matrix</strong> is a table that shows how well a classification model performs by comparing predicted vs actual labels.<br><br>It has 4 values: <strong>True Positives (TP)</strong> — correctly predicted positive, <strong>True Negatives (TN)</strong> — correctly predicted negative, <strong>False Positives (FP)</strong> — wrongly predicted positive, <strong>False Negatives (FN)</strong> — wrongly predicted negative.<br><br>From this we derive: <strong>Accuracy</strong> = (TP+TN)/Total, <strong>Precision</strong> = TP/(TP+FP), <strong>Recall</strong> = TP/(TP+FN), <strong>F1 Score</strong> = harmonic mean of precision and recall.",
+    code:`<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> <span class="fn">confusion_matrix</span>, <span class="fn">classification_report</span>
+
+cm = <span class="fn">confusion_matrix</span>(y_true, y_pred)
+<span class="cm">#          Predicted</span>
+<span class="cm">#          Neg  Pos</span>
+<span class="cm"># Actual Neg [ TN   FP ]</span>
+<span class="cm"># Actual Pos [ FN   TP ]</span>
+
+<span class="fn">print</span>(<span class="fn">classification_report</span>(y_true, y_pred))` },
+
+  { t:"What is the difference between training set, validation set, and test set?", subj:"AI/ML", diff:"easy",
+    hint:"Training: model learns from it. Validation: tune hyperparameters, prevent overfitting. Test: final unseen evaluation. Typical split: 70/15/15 or 80/10/10.",
+    tip:"If they only split into train/test, they might not understand proper model evaluation.",
+    ans:"<strong>Training set (70-80%):</strong> The model learns patterns from this data.<br><br><strong>Validation set (10-15%):</strong> Used during training to tune hyperparameters and check for overfitting. The model does NOT learn from this.<br><br><strong>Test set (10-15%):</strong> Completely unseen data used only once at the very end to evaluate final model performance.<br><br>If you skip validation, you risk overfitting your hyperparameters to the test set." },
+
+  { t:"Explain what a neural network is in simple terms.", subj:"AI/ML", diff:"medium",
+    hint:"Layers of interconnected nodes (neurons). Input layer → hidden layers → output layer. Each connection has a weight. Learns by adjusting weights via backpropagation.",
+    tip:"Ask them to draw it or explain layer by layer. Freshers who actually used one can explain forward pass and backpropagation at a basic level.",
+    ans:"A <strong>neural network</strong> is a computational model inspired by the human brain. It has:<br><br><strong>Input layer:</strong> receives the data features<br><strong>Hidden layers:</strong> process the data through weighted connections and activation functions<br><strong>Output layer:</strong> produces the prediction<br><br>Each neuron takes inputs, multiplies by weights, adds a bias, and passes through an activation function (like ReLU or sigmoid). The network learns by <strong>backpropagation</strong> — adjusting weights to minimise the error between predicted and actual output." },
+
+  { t:"What is the difference between precision and recall? When would you prioritise one over the other?", subj:"AI/ML", diff:"medium",
+    hint:"Precision: of all predicted positives, how many are actually positive. Recall: of all actual positives, how many did we find. Medical diagnosis → recall. Spam filter → precision.",
+    tip:"Great question to test if they understand practical ML tradeoffs, not just theory.",
+    ans:"<strong>Precision</strong> = TP / (TP + FP) — 'Of everything I predicted as positive, how many were actually positive?' High precision = few false alarms.<br><br><strong>Recall</strong> = TP / (TP + FN) — 'Of all actual positives, how many did I catch?' High recall = few missed cases.<br><br><strong>Prioritise recall</strong> when missing a positive is costly — cancer detection, fraud detection.<br><strong>Prioritise precision</strong> when false positives are costly — spam filters, recommendation systems." },
+
+  // DevOps
+  { t:"What is Git and why do we use version control?", subj:"DevOps", diff:"easy",
+    hint:"Git tracks changes to code over time. Enables collaboration, rollback, branching. Ask if they've used it in their project and what commands they know.",
+    tip:"If they can't explain basic git workflow (add, commit, push, pull), they likely didn't collaborate on their project.",
+    ans:"<strong>Git</strong> is a distributed version control system that tracks changes to files over time. <strong>Why we use it:</strong><br><br>(1) <strong>History:</strong> Every change is recorded — you can see who changed what and when<br>(2) <strong>Rollback:</strong> Revert to any previous version if something breaks<br>(3) <strong>Branching:</strong> Work on features independently without affecting the main code<br>(4) <strong>Collaboration:</strong> Multiple developers can work on the same project without conflicts",
+    code:`<span class="cm"># Basic Git workflow</span>
+git init                    <span class="cm"># initialise repo</span>
+git add .                   <span class="cm"># stage changes</span>
+git commit -m <span class="st">"message"</span>     <span class="cm"># save snapshot</span>
+git push origin main        <span class="cm"># push to remote</span>
+
+<span class="cm"># Branching</span>
+git checkout -b feature     <span class="cm"># create & switch to branch</span>
+git merge feature           <span class="cm"># merge back to main</span>
+
+<span class="cm"># See history</span>
+git log --oneline           <span class="cm"># compact commit history</span>` },
+
+  { t:"What is the difference between Docker containers and virtual machines?", subj:"DevOps", diff:"medium",
+    hint:"VMs virtualise hardware (full OS per VM, heavy). Containers virtualise OS (share host kernel, lightweight, start in seconds). Docker is a container platform.",
+    tip:"If they've used Docker in their project, ask them to explain their Dockerfile. Most freshers who mention Docker have only done basic tutorials.",
+    ans:"<strong>Virtual Machines:</strong> Each VM runs a full guest OS on top of a hypervisor. Heavy (GBs), slow to start (minutes), strong isolation.<br><br><strong>Containers:</strong> Share the host OS kernel, package only the app and its dependencies. Lightweight (MBs), start in seconds, less isolation but much more efficient.<br><br><strong>Docker</strong> is the most popular container platform. Use containers when you need fast, lightweight deployment. Use VMs when you need full OS isolation.",
+    code:`<span class="cm"># Dockerfile example</span>
+<span class="kw">FROM</span> python:3.9-slim
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> requirements.txt .
+<span class="kw">RUN</span> pip install -r requirements.txt
+<span class="kw">COPY</span> . .
+<span class="kw">CMD</span> [<span class="st">"python"</span>, <span class="st">"app.py"</span>]
+
+<span class="cm"># Build and run</span>
+docker build -t myapp .
+docker run -p <span class="nm">5000</span>:<span class="nm">5000</span> myapp` },
+
+  { t:"What is CI/CD and why is it important?", subj:"DevOps", diff:"medium",
+    hint:"CI: Continuous Integration — automatically build and test on every code push. CD: Continuous Deployment — automatically deploy to production. Catches bugs early, speeds up delivery.",
+    tip:"Ask if their project had any automated testing or deployment pipeline. Most freshers won't, but knowing the concept is good.",
+    ans:"<strong>CI (Continuous Integration):</strong> Every time a developer pushes code, it is automatically built and tested. This catches bugs early before they reach production.<br><br><strong>CD (Continuous Delivery/Deployment):</strong> After CI passes, the code is automatically deployed to staging or production. No manual deployment steps.<br><br><strong>Why it matters:</strong> Faster releases, fewer bugs in production, developers get immediate feedback. Tools: GitHub Actions, Jenkins, GitLab CI." },
+
+  { t:"What is an API and how does REST work?", subj:"DevOps", diff:"easy",
+    hint:"API: interface for software to communicate. REST: uses HTTP methods (GET, POST, PUT, DELETE) on resources identified by URLs. Stateless. JSON responses.",
+    tip:"Almost every project uses APIs. Ask them which APIs their project consumed or exposed.",
+    ans:"<strong>API (Application Programming Interface):</strong> A set of rules that allows one software to talk to another. Like a waiter between you (client) and the kitchen (server).<br><br><strong>REST (Representational State Transfer):</strong> An architectural style for APIs using HTTP methods:<br>- <strong>GET</strong> — read data<br>- <strong>POST</strong> — create data<br>- <strong>PUT</strong> — update data<br>- <strong>DELETE</strong> — remove data<br><br>REST APIs are stateless (each request is independent), use URLs to identify resources, and typically return JSON.",
+    code:`<span class="cm"># REST API example with Flask</span>
+<span class="kw">from</span> flask <span class="kw">import</span> Flask, jsonify, request
+
+app = <span class="fn">Flask</span>(__name__)
+
+<span class="kw">@app.route</span>(<span class="st">'/students'</span>, methods=[<span class="st">'GET'</span>])
+<span class="kw">def</span> <span class="fn">get_students</span>():
+    <span class="kw">return</span> <span class="fn">jsonify</span>(students)
+
+<span class="kw">@app.route</span>(<span class="st">'/students'</span>, methods=[<span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">add_student</span>():
+    data = request.<span class="fn">get_json</span>()
+    students.<span class="fn">append</span>(data)
+    <span class="kw">return</span> <span class="fn">jsonify</span>(data), <span class="nm">201</span>` },
+
+  { t:"Explain what cloud computing is. What is the difference between IaaS, PaaS, and SaaS?", subj:"DevOps", diff:"medium",
+    hint:"Cloud: on-demand computing resources over internet. IaaS: raw infrastructure (AWS EC2). PaaS: platform to build on (Heroku). SaaS: ready-to-use software (Gmail).",
+    tip:"Ask which cloud services they used in their project, if any. Even free-tier services count.",
+    ans:"<strong>Cloud computing:</strong> Accessing computing resources (servers, storage, databases) over the internet instead of owning physical hardware.<br><br><strong>IaaS (Infrastructure as a Service):</strong> Raw computing resources — you manage everything from OS up. Examples: AWS EC2, Google Compute Engine.<br><br><strong>PaaS (Platform as a Service):</strong> Platform handles infrastructure, you just deploy code. Examples: Heroku, Google App Engine, Netlify.<br><br><strong>SaaS (Software as a Service):</strong> Fully managed software, just use it. Examples: Gmail, Slack, Google Docs." },
+
+  { t:"What is Linux and why is it important for developers?", subj:"DevOps", diff:"easy",
+    hint:"Open-source OS. Most servers run Linux. Know basic commands: ls, cd, mkdir, rm, grep, chmod, ps, kill. Package managers: apt, yum.",
+    tip:"Ask them to name 5 Linux commands they've used. If they can't, they likely haven't deployed anything.",
+    ans:"<strong>Linux</strong> is a free, open-source operating system. It's important because:<br><br>(1) <strong>Most servers run Linux</strong> — AWS, Azure, Google Cloud all default to Linux<br>(2) <strong>Docker containers</strong> are Linux-based<br>(3) <strong>Development tools</strong> work best on Linux/Unix environments<br>(4) <strong>It's free and customizable</strong> — no licensing costs<br><br>Basic commands every developer should know: <code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>rm</code>, <code>grep</code>, <code>chmod</code>, <code>ps</code>, <code>cat</code>, <code>ssh</code>." },
 ];
 
 // ══════════════════════════════════════════════
@@ -1275,7 +1407,7 @@ let techStack = [];
 // ══════════════════════════════════════════════
 // SYLLABUS TAB
 // ══════════════════════════════════════════════
-const subjects = ["All", ...["DBMS","OS","CN","OOP","DS","DAA","SE","CD"]];
+const subjects = ["All", ...["DBMS","OS","CN","OOP","DS","DAA","SE","CD","AI/ML","DevOps"]];
 const diffs = ["All","easy","medium"];
 
 function buildFilters() {
@@ -1457,7 +1589,7 @@ Generate exactly 10 interview questions to ask this fresher ABOUT THEIR PROJECT 
 - Include questions that reveal if they actually built the project vs just submitted it
 
 Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format:
-[{"q":"question text","tech":"which tech this is about","hint":"1-2 sentences on what good answer looks like"}]`;
+[{"q":"question text","tech":"which tech this is about","hint":"1-2 sentences on what good answer looks like","ans":"A clear, concise model answer (3-5 sentences) that a fresher could realistically give. Use simple language."}]`;
 
   try {
     const res = await fetch(API_URL, {
@@ -1465,17 +1597,16 @@ Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
+        max_tokens: 2500,
         messages: [{ role: "user", content: prompt }]
       })
     });
     const data = await res.json();
-    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
     const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
     const clean = raw.replace(/```json|```/g, "").trim();
     const qs = JSON.parse(clean);
 
-     = `
+    out.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:12px;color:var(--muted)">Generated <strong style="color:var(--accent)">${qs.length}</strong> questions for: ${techStack.map(t=>`<span style="font-size:11px;padding:2px 8px;border-radius:100px;background:var(--gen-tag-bg);color:var(--gen-tag-text);margin-left:4px">${t}</span>`).join("")}</span>
       </div>
@@ -1486,9 +1617,11 @@ Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format
             <div class="gen-qtext">${q.q}</div>
             <span class="gen-tech-tag">${q.tech}</span>
           </div>
-          <div class="expand-row" style="padding-left:22px"><span class="expand-chevron">▾</span><span class="expand-lbl">what to look for</span></div>
+          <div class="expand-row" style="padding-left:22px"><span class="expand-chevron">▾</span><span class="expand-lbl">answer & what to look for</span></div>
           <div class="hint-box" style="margin-left:22px">
-            <div class="hint-lbl">// look for</div>
+            <div class="hint-lbl">// model answer</div>
+            <div class="hint-text" style="margin-bottom:10px">${q.ans || ""}</div>
+            <div class="hint-lbl">// what to look for</div>
             <div class="hint-text">${q.hint}</div>
           </div>
         </div>`).join("")}
@@ -1544,7 +1677,6 @@ Respond ONLY with valid JSON, no markdown, no backticks:
       })
     });
     const data = await res.json();
-    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
     const raw = data.content.filter(b => b.type === "text").map(b => b.text).join("");
     const clean = raw.replace(/```json|```/g, "").trim();
     const b = JSON.parse(clean);
