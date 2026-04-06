@@ -559,8 +559,19 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
 .panelist-tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; background: var(--accent-light); color: var(--accent); font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
 .panelist-tag:hover { border-color: var(--accent); }
 
-.student-select { font-family: 'Inter', sans-serif; font-size: 12px; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; outline: none; min-width: 140px; }
-.student-select:focus { border-color: var(--accent); }
+.student-select-wrap { position: relative; min-width: 180px; }
+.student-select-btn { font-family: 'Inter', sans-serif; font-size: 12px; padding: 5px 28px 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; outline: none; width: 100%; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; }
+.student-select-btn::after { content: "▾"; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--muted); pointer-events: none; }
+.student-select-btn:focus, .student-select-btn.open { border-color: var(--accent); }
+.student-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); z-index: 150; display: none; max-height: 240px; overflow: hidden; flex-direction: column; }
+.student-dropdown.open { display: flex; }
+.student-search { width: 100%; border: none; border-bottom: 1px solid var(--border); padding: 8px 10px; font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text); background: var(--surface); outline: none; }
+.student-search::placeholder { color: var(--dim); }
+.student-opts { overflow-y: auto; max-height: 194px; }
+.student-opt { padding: 7px 10px; font-size: 12px; color: var(--text); cursor: pointer; transition: background 0.1s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.student-opt:hover { background: var(--accent-light); }
+.student-opt.selected { font-weight: 600; color: var(--accent); }
+.student-opt.empty { color: var(--muted); font-style: italic; pointer-events: none; }
 
 .add-student-btn { font-size: 11px; padding: 4px 10px; border-radius: 100px; border: 1px dashed var(--border2); background: transparent; color: var(--muted); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; transition: all 0.15s; }
 .add-student-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -697,9 +708,13 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
 <div class="eval-toolbar">
   <div class="eval-controls">
     <span class="panelist-tag" id="panelistTag" onclick="changePanelist()" title="Click to change">Panelist</span>
-    <select class="student-select" id="studentSelect" onchange="onStudentChange()">
-      <option value="">-- Select Student --</option>
-    </select>
+    <div class="student-select-wrap" id="studentSelectWrap">
+      <button class="student-select-btn" id="studentSelectBtn" type="button" onclick="toggleStudentDropdown()">-- Select Student --</button>
+      <div class="student-dropdown" id="studentDropdown">
+        <input type="text" class="student-search" id="studentSearch" placeholder="Search students…" autocomplete="off" oninput="filterStudentDropdown()" />
+        <div class="student-opts" id="studentOpts"></div>
+      </div>
+    </div>
     <button class="add-student-btn" onclick="openAddStudent()">+ Add</button>
   </div>
   <button class="export-btn" onclick="exportExcel()">Export Excel</button>
@@ -962,18 +977,62 @@ function loadStudents() {
 }
 
 function renderStudentDropdown() {
-  const sel = document.getElementById("studentSelect");
-  const current = sel.value;
-  sel.innerHTML = '<option value="">-- Select Student --</option>' +
-    students.map(s => `<option value="${s.id}">${s.name}${s.college ? " (" + s.college + ")" : ""}</option>`).join("");
-  if (current) sel.value = current;
+  const btn = document.getElementById("studentSelectBtn");
+  const student = students.find(s => s.id === selectedStudentId);
+  btn.textContent = student ? `${student.name}${student.college ? " (" + student.college + ")" : ""}` : "-- Select Student --";
+  renderStudentOpts();
 }
 
-function onStudentChange() {
-  const val = document.getElementById("studentSelect").value;
-  selectedStudentId = val || null;
+function renderStudentOpts(filter) {
+  const opts = document.getElementById("studentOpts");
+  const q = (filter || "").toLowerCase();
+  const filtered = students.filter(s => !q || s.name.toLowerCase().includes(q) || (s.college || "").toLowerCase().includes(q));
+  if (!filtered.length) {
+    opts.innerHTML = '<div class="student-opt empty">No match</div>';
+    return;
+  }
+  opts.innerHTML = '<div class="student-opt" data-val="" onclick="selectStudent(\'\')">-- Select Student --</div>' +
+    filtered.map(s => `<div class="student-opt ${s.id === selectedStudentId ? 'selected' : ''}" data-val="${s.id}" onclick="selectStudent('${s.id}')">${s.name}${s.college ? " (" + s.college + ")" : ""}</div>`).join("");
+}
+
+function toggleStudentDropdown() {
+  const dd = document.getElementById("studentDropdown");
+  const btn = document.getElementById("studentSelectBtn");
+  const isOpen = dd.classList.contains("open");
+  if (isOpen) { closeStudentDropdown(); return; }
+  dd.classList.add("open");
+  btn.classList.add("open");
+  document.getElementById("studentSearch").value = "";
+  renderStudentOpts();
+  setTimeout(() => document.getElementById("studentSearch").focus(), 50);
+}
+
+function closeStudentDropdown() {
+  document.getElementById("studentDropdown").classList.remove("open");
+  document.getElementById("studentSelectBtn").classList.remove("open");
+}
+
+function filterStudentDropdown() {
+  const q = document.getElementById("studentSearch").value;
+  renderStudentOpts(q);
+}
+
+function selectStudent(id) {
+  selectedStudentId = id || null;
+  closeStudentDropdown();
+  renderStudentDropdown();
   clearCurrentEval();
   updateEvalBar();
+}
+
+// Close dropdown when clicking outside
+document.addEventListener("click", e => {
+  const wrap = document.getElementById("studentSelectWrap");
+  if (wrap && !wrap.contains(e.target)) closeStudentDropdown();
+});
+
+function onStudentChange() {
+  // kept for compatibility — not used by new dropdown
 }
 
 function openAddStudent() {
@@ -995,9 +1054,7 @@ function saveNewStudent() {
   students.push(newStudent);
   saveStudents();
   closeAddStudent();
-  renderStudentDropdown();
-  document.getElementById("studentSelect").value = newStudent.id;
-  onStudentChange();
+  selectStudent(newStudent.id);
 }
 
 // Evaluation tracking
