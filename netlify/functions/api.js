@@ -22,7 +22,8 @@ exports.handler = async (event) => {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01"
+        "anthropic-version": "2023-06-01",
+        "anthropic-beta": "pdfs-2024-09-25"
       },
       body: event.body
     });
