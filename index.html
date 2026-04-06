@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interview Panel — VTU 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -547,6 +548,123 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
   .candidate-header { padding: 1rem; }
   .candidate-body { padding: 1rem; }
 }
+
+/* ══════════════════════════════════════════════ */
+/* EVALUATION SYSTEM                             */
+/* ══════════════════════════════════════════════ */
+
+/* panelist & student controls in header */
+.eval-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+.panelist-tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; background: var(--accent-light); color: var(--accent); font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+.panelist-tag:hover { border-color: var(--accent); }
+
+.student-select { font-family: 'Inter', sans-serif; font-size: 12px; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; outline: none; min-width: 140px; }
+.student-select:focus { border-color: var(--accent); }
+
+.add-student-btn { font-size: 11px; padding: 4px 10px; border-radius: 100px; border: 1px dashed var(--border2); background: transparent; color: var(--muted); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; transition: all 0.15s; }
+.add-student-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.export-btn { font-size: 11px; padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; transition: all 0.15s; }
+.export-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Mark as asked button on question cards */
+.ask-btn { font-size: 10px; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; transition: all 0.15s; white-space: nowrap; }
+.ask-btn:hover { border-color: #297691; color: #297691; }
+.ask-btn.asked { background: #297691; border-color: #297691; color: #fff; }
+
+.qcard.q-asked { border-left: 3px solid #297691; }
+
+/* Inline evaluation area inside cards */
+.eval-inline { margin-top: 10px; margin-left: 30px; padding: 10px 14px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); display: none; }
+.qcard.q-asked .eval-inline { display: block; }
+
+.score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.score-label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.score-dots { display: flex; gap: 4px; }
+.score-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); background: transparent; cursor: pointer; font-size: 11px; font-weight: 700; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-family: 'Inter', sans-serif; }
+.score-dot:hover { border-color: #297691; color: #297691; }
+.score-dot.active { background: #297691; border-color: #297691; color: #fff; }
+
+.eval-feedback { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text); background: var(--surface); resize: vertical; min-height: 36px; outline: none; transition: border-color 0.15s; }
+.eval-feedback::placeholder { color: var(--dim); }
+.eval-feedback:focus { border-color: #297691; }
+
+/* Floating evaluation bar */
+.eval-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 2px solid #297691; padding: 10px 1.5rem; display: none; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
+.eval-bar.visible { display: flex; }
+.eval-bar-inner { max-width: 880px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 12px; flex-wrap: wrap; }
+.eval-bar-info { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.eval-bar-student { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--text); }
+.eval-bar-stats { display: flex; gap: 12px; }
+.eval-bar-stat { font-size: 11px; color: var(--muted); }
+.eval-bar-stat strong { color: #297691; font-weight: 700; }
+.eval-bar-actions { display: flex; gap: 8px; }
+.preview-btn { padding: 8px 20px; background: #297691; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.15s; }
+.preview-btn:hover { opacity: 0.88; }
+.preview-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.clear-eval-btn { padding: 8px 14px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; }
+.clear-eval-btn:hover { border-color: var(--hard-text); color: var(--hard-text); }
+
+/* Preview modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; overflow-y: auto; padding: 2rem 1rem; }
+.modal-overlay.open { display: flex; justify-content: center; align-items: flex-start; }
+.modal-box { background: var(--bg); border-radius: 16px; max-width: 720px; width: 100%; padding: 0; overflow: hidden; animation: fadeUp 0.2s ease; }
+.modal-header { padding: 1.25rem 1.5rem; background: #297691; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; }
+.modal-close { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: rgba(255,255,255,0.35); }
+.modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+.preview-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.preview-meta-item { font-size: 12px; color: var(--muted); }
+.preview-meta-item strong { color: var(--text); }
+
+.preview-q { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.preview-q-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.preview-q-text { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.6; flex: 1; }
+.preview-q-score { font-size: 20px; font-weight: 700; color: #297691; min-width: 32px; text-align: center; }
+.preview-q-tags { display: flex; gap: 4px; margin-top: 6px; }
+.preview-q-tag { font-size: 10px; padding: 1px 8px; border-radius: 100px; background: var(--gen-tag-bg); color: var(--gen-tag-text); font-weight: 600; }
+.preview-q-feedback { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; padding-top: 6px; border-top: 1px solid var(--border); }
+.preview-q-feedback em { font-style: italic; }
+
+.preview-overall { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.preview-overall label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 600; display: block; margin-bottom: 6px; }
+.preview-overall textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text); background: var(--bg); resize: vertical; min-height: 60px; outline: none; }
+.preview-overall textarea:focus { border-color: #297691; }
+
+.modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+.submit-btn { padding: 10px 28px; background: #297691; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.15s; }
+.submit-btn:hover { opacity: 0.88; }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.cancel-btn { padding: 10px 20px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; }
+.cancel-btn:hover { color: var(--text); border-color: var(--border2); }
+
+/* Add student modal */
+.add-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: none; justify-content: center; align-items: center; }
+.add-modal.open { display: flex; }
+.add-modal-box { background: var(--surface); border-radius: 14px; padding: 1.5rem; max-width: 380px; width: 90%; animation: fadeUp 0.2s ease; }
+.add-modal-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; }
+.add-modal-box input { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; margin-bottom: 8px; }
+.add-modal-box input:focus { border-color: #297691; }
+.add-modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+
+/* Past evaluations list */
+.past-evals { margin-top: 1rem; }
+.past-eval-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s; }
+.past-eval-card:hover { border-color: #297691; }
+.past-eval-top { display: flex; justify-content: space-between; align-items: center; }
+.past-eval-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.past-eval-meta { font-size: 11px; color: var(--muted); }
+.past-eval-score { font-size: 14px; font-weight: 700; color: #297691; }
+
+@media (max-width: 580px) {
+  .eval-controls { gap: 6px; }
+  .eval-bar-inner { flex-direction: column; align-items: stretch; }
+  .eval-bar-actions { justify-content: stretch; }
+  .preview-btn { flex: 1; text-align: center; }
+  .modal-body { padding: 1rem; }
+}
 </style>
 </head>
 <body>
@@ -560,9 +678,19 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
       <p class="subtitle">Syllabus-based + project-based questions for college technical rounds.</p>
     </div>
     <div class="header-right">
-      <div class="theme-toggle" onclick="toggleTheme()">
-        <button class="toggle-btn active" id="btn-light">☀️</button>
-        <button class="toggle-btn" id="btn-dark">🌙</button>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="theme-toggle" onclick="toggleTheme()">
+          <button class="toggle-btn active" id="btn-light">☀️</button>
+          <button class="toggle-btn" id="btn-dark">🌙</button>
+        </div>
+        <button class="export-btn" onclick="exportExcel()">Export Excel</button>
+      </div>
+      <div class="eval-controls">
+        <span class="panelist-tag" id="panelistTag" onclick="changePanelist()" title="Click to change">Panelist</span>
+        <select class="student-select" id="studentSelect" onchange="onStudentChange()">
+          <option value="">-- Select Student --</option>
+        </select>
+        <button class="add-student-btn" onclick="openAddStudent()">+ Add</button>
       </div>
       <div class="stats-row">
         <div class="stat"><div class="stat-num" id="hdrCount">75+</div><div class="stat-label">Questions</div></div>
@@ -732,11 +860,339 @@ footer { padding: 2rem 0; border-top: 1px solid var(--border); font-size: 11px; 
 
 </div><!-- /wrap -->
 
+<!-- Floating evaluation bar -->
+<div class="eval-bar" id="evalBar">
+  <div class="eval-bar-inner">
+    <div class="eval-bar-info">
+      <span class="eval-bar-student" id="evalBarStudent">—</span>
+      <div class="eval-bar-stats">
+        <span class="eval-bar-stat">Asked: <strong id="evalBarCount">0</strong></span>
+        <span class="eval-bar-stat">Avg: <strong id="evalBarAvg">—</strong>/5</span>
+      </div>
+    </div>
+    <div class="eval-bar-actions">
+      <button class="clear-eval-btn" onclick="clearCurrentEval()">Clear</button>
+      <button class="preview-btn" id="previewBtn" onclick="openPreview()" disabled>Preview & Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Preview modal -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="previewTitle">Evaluation Preview</h2>
+      <button class="modal-close" onclick="closePreview()">✕</button>
+    </div>
+    <div class="modal-body" id="previewBody"></div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="closePreview()">Cancel</button>
+      <button class="submit-btn" id="submitBtn" onclick="submitEvaluation()">Submit Evaluation</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add student modal -->
+<div class="add-modal" id="addStudentModal">
+  <div class="add-modal-box">
+    <h3>Add New Student</h3>
+    <input type="text" id="newStudentName" placeholder="Student name" onkeydown="if(event.key==='Enter') saveNewStudent()" />
+    <input type="text" id="newStudentCollege" placeholder="College (optional)" onkeydown="if(event.key==='Enter') saveNewStudent()" />
+    <div class="add-modal-btns">
+      <button class="cancel-btn" onclick="closeAddStudent()">Cancel</button>
+      <button class="submit-btn" style="padding:8px 18px;font-size:13px" onclick="saveNewStudent()">Add</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════════════════════════
 // API — calls go through /api (Netlify Function proxy)
 // ══════════════════════════════════════════════
 const API_URL = "/api";
+
+// ══════════════════════════════════════════════
+// EVALUATION SYSTEM — localStorage
+// ══════════════════════════════════════════════
+let panelistName = localStorage.getItem("panelistName") || "";
+let students = JSON.parse(localStorage.getItem("eval_students") || "[]");
+let allEvaluations = JSON.parse(localStorage.getItem("eval_results") || "[]");
+let selectedStudentId = null;
+let currentEval = {}; // { "question text": { score: 3, feedback: "...", source: "syllabus", subject: "DBMS" } }
+
+function saveStudents() { localStorage.setItem("eval_students", JSON.stringify(students)); }
+function saveEvaluations() { localStorage.setItem("eval_results", JSON.stringify(allEvaluations)); }
+
+// Panelist
+function initPanelist() {
+  if (!panelistName) changePanelist();
+  else document.getElementById("panelistTag").textContent = panelistName;
+}
+
+function changePanelist() {
+  const name = prompt("Enter your name (panelist):", panelistName);
+  if (name && name.trim()) {
+    panelistName = name.trim();
+    localStorage.setItem("panelistName", panelistName);
+    document.getElementById("panelistTag").textContent = panelistName;
+  }
+}
+
+// Students
+function loadStudents() {
+  students = JSON.parse(localStorage.getItem("eval_students") || "[]");
+  renderStudentDropdown();
+}
+
+function renderStudentDropdown() {
+  const sel = document.getElementById("studentSelect");
+  const current = sel.value;
+  sel.innerHTML = '<option value="">-- Select Student --</option>' +
+    students.map(s => `<option value="${s.id}">${s.name}${s.college ? " (" + s.college + ")" : ""}</option>`).join("");
+  if (current) sel.value = current;
+}
+
+function onStudentChange() {
+  const val = document.getElementById("studentSelect").value;
+  selectedStudentId = val || null;
+  clearCurrentEval();
+  updateEvalBar();
+}
+
+function openAddStudent() {
+  document.getElementById("addStudentModal").classList.add("open");
+  document.getElementById("newStudentName").value = "";
+  document.getElementById("newStudentCollege").value = "";
+  setTimeout(() => document.getElementById("newStudentName").focus(), 100);
+}
+
+function closeAddStudent() {
+  document.getElementById("addStudentModal").classList.remove("open");
+}
+
+function saveNewStudent() {
+  const name = document.getElementById("newStudentName").value.trim();
+  const college = document.getElementById("newStudentCollege").value.trim();
+  if (!name) return;
+  const newStudent = { id: "s_" + Date.now(), name, college: college || null, created_at: new Date().toISOString() };
+  students.push(newStudent);
+  saveStudents();
+  closeAddStudent();
+  renderStudentDropdown();
+  document.getElementById("studentSelect").value = newStudent.id;
+  onStudentChange();
+}
+
+// Evaluation tracking
+function toggleAsked(questionText, source, subject, e) {
+  if (e) e.stopPropagation();
+  if (!selectedStudentId) { alert("Please select a student first."); return; }
+  if (currentEval[questionText]) {
+    delete currentEval[questionText];
+  } else {
+    currentEval[questionText] = { score: 0, feedback: "", source: source || "", subject: subject || "" };
+  }
+  refreshAskedUI();
+  updateEvalBar();
+}
+
+function setScore(questionText, score, e) {
+  if (e) e.stopPropagation();
+  if (!currentEval[questionText]) return;
+  currentEval[questionText].score = currentEval[questionText].score === score ? 0 : score;
+  refreshAskedUI();
+  updateEvalBar();
+}
+
+function setFeedback(questionText, value, e) {
+  if (e) e.stopPropagation();
+  if (!currentEval[questionText]) return;
+  currentEval[questionText].feedback = value;
+}
+
+function refreshAskedUI() {
+  document.querySelectorAll("[data-eval-q]").forEach(card => {
+    const qt = card.getAttribute("data-eval-q");
+    const isAsked = !!currentEval[qt];
+    card.classList.toggle("q-asked", isAsked);
+    const btn = card.querySelector(".ask-btn");
+    if (btn) { btn.classList.toggle("asked", isAsked); btn.textContent = isAsked ? "Asked" : "Ask"; }
+    card.querySelectorAll(".score-dot").forEach(dot => {
+      const s = parseInt(dot.getAttribute("data-score"));
+      dot.classList.toggle("active", isAsked && currentEval[qt].score >= s);
+    });
+  });
+}
+
+function updateEvalBar() {
+  const bar = document.getElementById("evalBar");
+  const keys = Object.keys(currentEval);
+  const hasStudent = !!selectedStudentId;
+
+  bar.classList.toggle("visible", hasStudent);
+  if (!hasStudent) return;
+
+  const student = students.find(s => s.id === selectedStudentId);
+  document.getElementById("evalBarStudent").textContent = student ? student.name : "—";
+  document.getElementById("evalBarCount").textContent = keys.length;
+
+  const scores = keys.map(k => currentEval[k].score).filter(s => s > 0);
+  document.getElementById("evalBarAvg").textContent = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : "—";
+  document.getElementById("previewBtn").disabled = keys.length === 0;
+}
+
+function clearCurrentEval() {
+  currentEval = {};
+  refreshAskedUI();
+  updateEvalBar();
+}
+
+// Preview
+function openPreview() {
+  const keys = Object.keys(currentEval);
+  if (!keys.length) return;
+  const student = students.find(s => s.id === selectedStudentId);
+  document.getElementById("previewTitle").textContent = `Evaluation: ${student?.name || "Student"}`;
+
+  const scores = keys.map(k => currentEval[k].score).filter(s => s > 0);
+  const avg = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : "—";
+
+  document.getElementById("previewBody").innerHTML = `
+    <div class="preview-meta">
+      <span class="preview-meta-item"><strong>Panelist:</strong> ${panelistName}</span>
+      <span class="preview-meta-item"><strong>Date:</strong> ${new Date().toLocaleDateString()}</span>
+      <span class="preview-meta-item"><strong>Questions:</strong> ${keys.length}</span>
+      <span class="preview-meta-item"><strong>Avg Score:</strong> ${avg}/5</span>
+    </div>
+    ${keys.map((qt, i) => {
+      const q = currentEval[qt];
+      return `<div class="preview-q">
+        <div class="preview-q-top">
+          <div>
+            <div class="preview-q-text">${i + 1}. ${qt}</div>
+            <div class="preview-q-tags">
+              ${q.source ? `<span class="preview-q-tag">${q.source}</span>` : ""}
+              ${q.subject ? `<span class="preview-q-tag">${q.subject}</span>` : ""}
+            </div>
+          </div>
+          <div class="preview-q-score">${q.score || "—"}</div>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="score-row">
+            <span class="score-label">Score</span>
+            <div class="score-dots">
+              ${[1,2,3,4,5].map(s => `<div class="score-dot ${q.score >= s ? 'active' : ''}" onclick="currentEval['${qt.replace(/'/g, "\\'")}'].score=${s};openPreview()">${s}</div>`).join("")}
+            </div>
+          </div>
+          <textarea class="eval-feedback" placeholder="Feedback..." oninput="currentEval['${qt.replace(/'/g, "\\'")}'].feedback=this.value">${q.feedback || ""}</textarea>
+        </div>
+      </div>`;
+    }).join("")}
+    <div class="preview-overall">
+      <label>Overall Notes</label>
+      <textarea id="overallNotes" placeholder="Summary of candidate performance...">${""}</textarea>
+    </div>
+    <div class="preview-overall">
+      <label>Overall Score (1-5)</label>
+      <div class="score-dots" style="margin-top:4px">
+        ${[1,2,3,4,5].map(s => `<div class="score-dot" id="ov-${s}" onclick="selectOverallScore(${s})" style="width:32px;height:32px;font-size:13px">${s}</div>`).join("")}
+      </div>
+    </div>`;
+  document.getElementById("previewModal").classList.add("open");
+}
+
+let overallScore = 0;
+function selectOverallScore(s) {
+  overallScore = overallScore === s ? 0 : s;
+  [1,2,3,4,5].forEach(i => document.getElementById("ov-" + i)?.classList.toggle("active", overallScore >= i));
+}
+
+function closePreview() {
+  document.getElementById("previewModal").classList.remove("open");
+}
+
+// Submit — saves to localStorage
+function submitEvaluation() {
+  const keys = Object.keys(currentEval);
+  if (!keys.length || !selectedStudentId) return;
+  document.getElementById("submitBtn").disabled = true;
+  document.getElementById("submitBtn").textContent = "Submitting...";
+
+  const student = students.find(s => s.id === selectedStudentId);
+  const questions = keys.map(qt => ({
+    question_text: qt,
+    question_source: currentEval[qt].source,
+    subject_tag: currentEval[qt].subject,
+    score: currentEval[qt].score || null,
+    feedback: currentEval[qt].feedback || null
+  }));
+
+  const evaluation = {
+    id: "e_" + Date.now(),
+    student_id: selectedStudentId,
+    student_name: student?.name || "",
+    student_college: student?.college || "",
+    panelist_name: panelistName,
+    date: new Date().toISOString().slice(0, 10),
+    overall_notes: document.getElementById("overallNotes")?.value || null,
+    overall_score: overallScore || null,
+    status: "submitted",
+    questions
+  };
+
+  allEvaluations.push(evaluation);
+  saveEvaluations();
+
+  document.getElementById("submitBtn").disabled = false;
+  document.getElementById("submitBtn").textContent = "Submit Evaluation";
+  closePreview();
+  clearCurrentEval();
+  overallScore = 0;
+  alert("Evaluation saved successfully!");
+}
+
+// Export — reads from localStorage
+function exportExcel() {
+  if (!allEvaluations.length) { alert("No evaluations saved yet."); return; }
+
+  const rows = [];
+  for (const ev of allEvaluations) {
+    if (ev.questions && ev.questions.length) {
+      for (const q of ev.questions) {
+        rows.push({
+          "Student": ev.student_name,
+          "College": ev.student_college || "",
+          "Panelist": ev.panelist_name,
+          "Date": ev.date,
+          "Overall Score": ev.overall_score,
+          "Overall Notes": ev.overall_notes || "",
+          "Status": ev.status,
+          "Question": q.question_text || "",
+          "Source": q.question_source || "",
+          "Subject": q.subject_tag || "",
+          "Score (1-5)": q.score,
+          "Feedback": q.feedback || ""
+        });
+      }
+    } else {
+      rows.push({
+        "Student": ev.student_name,
+        "College": ev.student_college || "",
+        "Panelist": ev.panelist_name,
+        "Date": ev.date,
+        "Overall Score": ev.overall_score,
+        "Overall Notes": ev.overall_notes || "",
+        "Status": ev.status,
+        "Question": "", "Source": "", "Subject": "", "Score (1-5)": "", "Feedback": ""
+      });
+    }
+  }
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Evaluations");
+  XLSX.writeFile(wb, `interview_evaluations_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
 
 // ══════════════════════════════════════════════
 // DATA — SYLLABUS QUESTIONS
@@ -1455,15 +1911,27 @@ function renderSyllabus() {
   list.innerHTML = filtered.map((qi, idx) => {
     const q = syllabusQs[qi];
     const hasCode = !!q.code;
+    const escaped = q.t.replace(/'/g, "\\'");
+    const isAsked = !!currentEval[q.t];
     return `
-    <div class="qcard" id="sq${qi}" onclick="toggleQ('sq${qi}')">
+    <div class="qcard ${isAsked ? 'q-asked' : ''}" id="sq${qi}" onclick="toggleQ('sq${qi}')" data-eval-q="${q.t.replace(/"/g, '&quot;')}">
       <div class="qcard-top">
         <span class="qnum">${String(idx+1).padStart(2,"0")}</span>
         <div class="qtext">${q.t}</div>
         <div class="qright">
+          <button class="ask-btn ${isAsked ? 'asked' : ''}" onclick="toggleAsked('${escaped}','syllabus','${q.subj}',event)">${isAsked ? 'Asked' : 'Ask'}</button>
           <span class="badge badge-syl">${q.subj}</span>
           <span class="badge" style="background:var(--${q.diff==="easy"?"easy":q.diff==="medium"?"medium":"hard"}-bg);color:var(--${q.diff==="easy"?"easy":q.diff==="medium"?"medium":"hard"}-text)">${q.diff}</span>
         </div>
+      </div>
+      <div class="eval-inline" onclick="event.stopPropagation()">
+        <div class="score-row">
+          <span class="score-label">Score</span>
+          <div class="score-dots">
+            ${[1,2,3,4,5].map(s => `<div class="score-dot ${isAsked && currentEval[q.t]?.score >= s ? 'active' : ''}" data-score="${s}" onclick="setScore('${escaped}',${s},event)">${s}</div>`).join("")}
+          </div>
+        </div>
+        <textarea class="eval-feedback" placeholder="Quick feedback on their answer..." onclick="event.stopPropagation()" oninput="setFeedback('${escaped}',this.value,event)">${isAsked ? (currentEval[q.t]?.feedback || "") : ""}</textarea>
       </div>
       <div class="expand-row"><span class="expand-chevron">▾</span><span class="expand-lbl">answer & approach</span></div>
       <div class="hint-box">
@@ -1525,14 +1993,26 @@ function renderProject() {
   list.innerHTML = filtered.map((qi, idx) => {
     const q = projectQs[qi];
     const typeLabel = projTypes[q.type] || q.type;
+    const escaped = q.t.replace(/'/g, "\\'");
+    const isAsked = !!currentEval[q.t];
     return `
-    <div class="qcard" id="pq${qi}" onclick="toggleQ('pq${qi}')">
+    <div class="qcard ${isAsked ? 'q-asked' : ''}" id="pq${qi}" onclick="toggleQ('pq${qi}')" data-eval-q="${q.t.replace(/"/g, '&quot;')}">
       <div class="qcard-top">
         <span class="qnum">${String(idx+1).padStart(2,"0")}</span>
         <div class="qtext">${q.t}</div>
         <div class="qright">
+          <button class="ask-btn ${isAsked ? 'asked' : ''}" onclick="toggleAsked('${escaped}','project','${q.type}',event)">${isAsked ? 'Asked' : 'Ask'}</button>
           <span class="badge badge-proj">${typeLabel}</span>
         </div>
+      </div>
+      <div class="eval-inline" onclick="event.stopPropagation()">
+        <div class="score-row">
+          <span class="score-label">Score</span>
+          <div class="score-dots">
+            ${[1,2,3,4,5].map(s => `<div class="score-dot ${isAsked && currentEval[q.t]?.score >= s ? 'active' : ''}" data-score="${s}" onclick="setScore('${escaped}',${s},event)">${s}</div>`).join("")}
+          </div>
+        </div>
+        <textarea class="eval-feedback" placeholder="Quick feedback..." onclick="event.stopPropagation()" oninput="setFeedback('${escaped}',this.value,event)">${isAsked ? (currentEval[q.t]?.feedback || "") : ""}</textarea>
       </div>
       <div class="expand-row"><span class="expand-chevron">▾</span><span class="expand-lbl">what to look for</span></div>
       <div class="hint-box">
@@ -1610,12 +2090,22 @@ Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:12px;color:var(--muted)">Generated <strong style="color:var(--accent)">${qs.length}</strong> questions for: ${techStack.map(t=>`<span style="font-size:11px;padding:2px 8px;border-radius:100px;background:var(--gen-tag-bg);color:var(--gen-tag-text);margin-left:4px">${t}</span>`).join("")}</span>
       </div>
-      <div class="generated-qs">${qs.map((q, i) => `
-        <div class="gen-qcard" id="gq${i}" onclick="toggleQ('gq${i}')">
+      <div class="generated-qs">${qs.map((q, i) => {
+        const escaped = q.q.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        const isAsked = !!currentEval[q.q];
+        return `
+        <div class="gen-qcard qcard ${isAsked ? 'q-asked' : ''}" id="gq${i}" data-eval-q="${q.q.replace(/"/g, '&quot;')}" onclick="toggleQ('gq${i}')">
           <div class="gen-qcard-top">
             <span class="qnum">${String(i+1).padStart(2,"0")}</span>
             <div class="gen-qtext">${q.q}</div>
-            <span class="gen-tech-tag">${q.tech}</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <button class="ask-btn ${isAsked ? 'asked' : ''}" onclick="toggleAsked('${escaped}','generated','${q.tech}',event)">${isAsked ? 'Asked' : 'Ask'}</button>
+              <span class="gen-tech-tag">${q.tech}</span>
+            </div>
+          </div>
+          <div class="eval-inline" onclick="event.stopPropagation()">
+            <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => '<div class="score-dot" data-score="'+s+'" onclick="setScore(\\''+escaped+'\\','+s+',event)">'+s+'</div>').join("")}</div></div>
+            <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback('${escaped}',this.value,event)" onclick="event.stopPropagation()"></textarea>
           </div>
           <div class="expand-row" style="padding-left:22px"><span class="expand-chevron">▾</span><span class="expand-lbl">answer & what to look for</span></div>
           <div class="hint-box" style="margin-left:22px">
@@ -1624,7 +2114,8 @@ Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format
             <div class="hint-lbl">// what to look for</div>
             <div class="hint-text">${q.hint}</div>
           </div>
-        </div>`).join("")}
+        </div>`;
+      }).join("")}
       </div>`;
   } catch (e) {
     out.innerHTML = `<div class="empty">Could not generate questions. Please try again.</div>`;
@@ -1713,14 +2204,25 @@ Respond ONLY with valid JSON, no markdown, no backticks:
         <div>
           <div class="brief-section-title">// 3 questions you can ask</div>
           <div class="brief-qs">
-            ${b.questions.map((q, i) => `
-              <div class="brief-q">
+            ${b.questions.map((q, i) => {
+              const escaped = q.q.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+              const isAsked = !!currentEval[q.q];
+              return `
+              <div class="brief-q qcard ${isAsked ? 'q-asked' : ''}" data-eval-q="${q.q.replace(/"/g, '&quot;')}">
                 <span class="brief-q-num">${String(i+1).padStart(2,"0")}</span>
-                <div>
-                  <div style="font-weight:500">${q.q}</div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between;align-items:start;gap:8px">
+                    <div style="font-weight:500">${q.q}</div>
+                    <button class="ask-btn ${isAsked ? 'asked' : ''}" onclick="toggleAsked('${escaped}','brief','${b.topic}',event)">${isAsked ? 'Asked' : 'Ask'}</button>
+                  </div>
                   <div style="font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.6">→ ${q.why}</div>
+                  <div class="eval-inline" onclick="event.stopPropagation()">
+                    <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => '<div class="score-dot" data-score="'+s+'" onclick="setScore(\\''+escaped+'\\','+s+',event)">'+s+'</div>').join("")}</div></div>
+                    <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback(\\'${escaped}\\',this.value,event)" onclick="event.stopPropagation()"></textarea>
+                  </div>
                 </div>
-              </div>`).join("")}
+              </div>`;
+            }).join("")}
           </div>
         </div>
 
@@ -1954,21 +2456,30 @@ function renderCandidateProfile(p) {
 
   const questions = p.questions?.length ? `
     <div class="section-heading">Personalised Question List <span class="section-heading-line"></span></div>
-    <div class="cand-qs">${p.questions.map((q,i)=>`
-      <div class="cand-qcard" id="cq${i}" onclick="this.classList.toggle('open')">
+    <div class="cand-qs">${p.questions.map((q,i)=>{
+      const escaped = q.q.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      const isAsked = !!currentEval[q.q];
+      return `
+      <div class="cand-qcard qcard ${isAsked ? 'q-asked' : ''}" id="cq${i}" data-eval-q="${q.q.replace(/"/g, '&quot;')}" onclick="this.classList.toggle('open')">
         <div class="cand-qtop">
           <span class="qnum">${String(i+1).padStart(2,"0")}</span>
           <div class="cand-qtext">${q.q}</div>
           <div class="cand-qright">
+            <button class="ask-btn ${isAsked ? 'asked' : ''}" onclick="toggleAsked('${escaped}','resume','${q.category}',event)">${isAsked ? 'Asked' : 'Ask'}</button>
             <span class="badge ${catColors[q.category]||"badge-core"}">${q.category}</span>
             <span style="font-size:9px;color:var(--dim);text-align:right;max-width:100px;line-height:1.3">${q.based_on}</span>
           </div>
+        </div>
+        <div class="eval-inline" onclick="event.stopPropagation()">
+          <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => '<div class="score-dot" data-score="'+s+'" onclick="setScore(\\''+escaped+'\\','+s+',event)">'+s+'</div>').join("")}</div></div>
+          <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback('${escaped}',this.value,event)" onclick="event.stopPropagation()"></textarea>
         </div>
         <div class="cand-why">
           <div class="cand-why-label">// why ask this</div>
           ${q.why}
         </div>
-      </div>`).join("")}
+      </div>`;
+    }).join("")}
     </div>` : "";
 
   out.innerHTML = `
@@ -2009,6 +2520,9 @@ renderProject();
 document.querySelectorAll(".section").forEach((s,i) => {
   if (i > 0) s.style.display = "none";
 });
+// Init evaluation system
+initPanelist();
+loadStudents();
 </script>
 </body>
 </html>
