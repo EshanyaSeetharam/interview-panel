@@ -2117,7 +2117,7 @@ Respond ONLY with a valid JSON array, no preamble, no markdown backticks. Format
             </div>
           </div>
           <div class="eval-inline" onclick="event.stopPropagation()">
-            <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => '<div class="score-dot" data-score="'+s+'" onclick="setScore(\\''+escaped+'\\','+s+',event)">'+s+'</div>').join("")}</div></div>
+            <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => `<div class="score-dot" data-score="${s}" onclick="setScore('${escaped}',${s},event)">${s}</div>`).join("")}</div></div>
             <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback('${escaped}',this.value,event)" onclick="event.stopPropagation()"></textarea>
           </div>
           <div class="expand-row" style="padding-left:22px"><span class="expand-chevron">▾</span><span class="expand-lbl">answer & what to look for</span></div>
@@ -2230,8 +2230,8 @@ Respond ONLY with valid JSON, no markdown, no backticks:
                   </div>
                   <div style="font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.6">→ ${q.why}</div>
                   <div class="eval-inline" onclick="event.stopPropagation()">
-                    <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => '<div class="score-dot" data-score="'+s+'" onclick="setScore(\\''+escaped+'\\','+s+',event)">'+s+'</div>').join("")}</div></div>
-                    <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback(\\'${escaped}\\',this.value,event)" onclick="event.stopPropagation()"></textarea>
+                    <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => `<div class="score-dot" data-score="${s}" onclick="setScore('${escaped}',${s},event)">${s}</div>`).join("")}</div></div>
+                    <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback('${escaped}',this.value,event)" onclick="event.stopPropagation()"></textarea>
                   </div>
                 </div>
               </div>`;
@@ -2484,7 +2484,7 @@ function renderCandidateProfile(p) {
           </div>
         </div>
         <div class="eval-inline" onclick="event.stopPropagation()">
-          <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => '<div class="score-dot" data-score="'+s+'" onclick="setScore(\\''+escaped+'\\','+s+',event)">'+s+'</div>').join("")}</div></div>
+          <div class="score-row"><span class="score-label">Score</span><div class="score-dots">${[1,2,3,4,5].map(s => `<div class="score-dot" data-score="${s}" onclick="setScore('${escaped}',${s},event)">${s}</div>`).join("")}</div></div>
           <textarea class="eval-feedback" placeholder="Feedback..." oninput="setFeedback('${escaped}',this.value,event)" onclick="event.stopPropagation()"></textarea>
         </div>
         <div class="cand-why">
